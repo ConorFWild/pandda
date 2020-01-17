@@ -1,0 +1,4 @@
+numpy>=1.16.0
+scipy >= 0.9
+joblib
+luigi
