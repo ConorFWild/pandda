@@ -32,6 +32,9 @@ class Processor:
 
     def __call__(self,
                  funcs,
+                 output_paths=None,
+                 result_loader=None,
+                 shared_tmp_dir=None,
                  ):
         results = []
         for func in funcs:
