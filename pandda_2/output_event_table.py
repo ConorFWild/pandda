@@ -6,4 +6,4 @@ class OutputEventTable:
                  event_table,
                  event_table_path,
                  ):
-        event_table.to_csv(event_table_path)
+        event_table.to_csv(str(event_table_path))

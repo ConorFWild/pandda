@@ -6,4 +6,4 @@ class OutputSitesTable:
                  sites_table,
                  sites_table_path,
                  ):
-        sites_table.to_csv(sites_table_path)
+        sites_table.to_csv(str(sites_table_path))

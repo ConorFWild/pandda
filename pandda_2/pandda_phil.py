@@ -191,7 +191,7 @@ pandda
         }
         diffraction_data
         {
-            structure_factors = FWT,PHWT
+            structure_factors = FWT,PHWT 2FOFCWT_iso-fill,PH2FOFCWT_iso-fill 2FOFCWT_fill,PH2FOFCWT_fill
                 .type = strings
             checks
                 .help = "checks on the mtz file data provided for each dataset"
