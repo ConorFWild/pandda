@@ -170,4 +170,4 @@ class PanDDADefaultEventTableShell:
             # TODO: not sure if removing comb_tab dependancy is reasonable
             # sort_eve = sort_eve.join(comb_tab, how='inner')
 
-            sort_eve.to_csv(path_or_buf=table_path)
+            sort_eve.to_csv(path_or_buf=str(table_path))
