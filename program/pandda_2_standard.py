@@ -1,7 +1,12 @@
 from __future__ import print_function
 
 # # Imports
-import sys
+import sys, time
+
+import matplotlib
+matplotlib.use("agg")
+from matplotlib import pyplot
+
 import pprint
 import json
 from pandda_2 import (config,
@@ -14,6 +19,7 @@ from pandda_2 import (config,
                       get_grid,
                       define_tree,
                       make_tree,
+                      copy_dataset_files,
                       output,
                       create_shells,
                       map_loader,
@@ -31,12 +37,29 @@ from pandda_2 import (config,
                       process_shell,
                       process_shells,
                       processor,
+                      create_sites_table,
+                      output_sites_table,
                       create_event_table,
                       output_event_table,
                       standard_pandda,
                       )
 
+
+class TaskWrapper:
+    def __init__(self, func, *args, **kwargs):
+        self.func = func
+        self.args = args
+        self.kwargs = kwargs
+
+    def __call__(self):
+        return self.func(*self.args, **self.kwargs)
+
+
 if __name__ == "__main__":
+
+    # Get start time
+    pandda_start_time = time.time()
+
     # Parse Config files and command line arguments
     working_phil = config.extract_params_default(master_phil=pandda_phil.pandda_phil,
                                                  args=sys.argv[1:],
@@ -75,9 +98,11 @@ if __name__ == "__main__":
     # Get output handler
     define_tree = define_tree.DefineTree(output_dir=config.output.out_dir)
     make_tree = make_tree.MakeTree(overwrite=config.output.overwrite)
+    copy_dataset_files = copy_dataset_files.DatasetFileCopier()
 
     output = output.Output(define_tree=define_tree,
                            make_tree=make_tree,
+                           copy_dataset_files=copy_dataset_files,
                            )
 
     # Get resolution shell scheme
@@ -125,6 +150,12 @@ if __name__ == "__main__":
 
     processer = processor.Processor()
 
+    # Get site table creator
+    create_sites_table = create_sites_table.CreateSitesTable()
+
+    # Get event table outputter
+    output_sites_table = output_sites_table.OutputSitesTable()
+
     # Get event table processor
     create_event_table = create_event_table.CreateEventTable()
 
@@ -132,27 +163,72 @@ if __name__ == "__main__":
     output_event_table = output_event_table.OutputEventTable()
 
     # Define program
-    pandda = standard_pandda.StandardPandda(load_dataset=load_dataset,
-                                            get_reference=get_reference,
-                                            transform_dataset=transform_dataset,
-                                            get_grid=get_grid,
-                                            partitioner=partitioner,
-                                            output=output,
-                                            create_shells=create_shells,
-                                            process_shell=process_shell,
-                                            processor=processer,
-                                            create_event_table=create_event_table,
-                                            output_event_table=output_event_table,
-                                            )
+    print("Loading dataset")
+    dataset = load_dataset()
 
-    ####################################################
+    print("Loading reference")
+    reference = get_reference(dataset.datasets)
 
-    # Summarise the PanDDA to be performed
-    print("pandda summary")
-    print(json.dumps(pandda.repr(),
-                     indent=8,
-                     )
-          )
+    print("Transforming dataset")
+    dataset = transform_dataset(dataset, reference)
 
-    # run the pandda
-    pandda()
+    print("Partitioning")
+    dataset.partitions = partitioner(dataset.datasets)
+
+    print("Getting grid")
+    grid = get_grid(reference)
+
+    print("Partitioning shells")
+    shells = {shell_num: shell_dataset
+              for shell_num, shell_dataset
+              in create_shells(dataset)
+              }
+
+    print("Output")
+    tree = output(dataset,
+                  shells,
+                  )
+
+    print("Processing shells")
+    shell_processors = []
+    for shell_num, shell_dataset in shells.items():
+        shell_p = TaskWrapper(process_shell,
+                              shell_dataset=shell_dataset,
+                              reference=reference,
+                              grid=grid,
+                              tree=tree,
+                              shell_num=shell_num,
+                              )
+        shell_processors.append(shell_p)
+    event_tables = processer(shell_processors,
+                             output_paths=[tree["shells"][shell_num]["event_table"]()
+                                           for shell_num
+                                           in range(len(shell_processors))
+                                           ],
+                             result_loader=None,
+                             shared_tmp_dir=tree["shells"](),
+                             )
+
+    print("Creating event table")
+    event_table = create_event_table(tree,
+                                     len(shells),
+                                     )
+
+    print("Creating sites table")
+    sites_table = create_sites_table(event_table,
+                                     grid,
+                                     reference,
+                                     )
+
+    print("Outputting event table")
+    output_sites_table(sites_table,
+                       tree["analyses"]["pandda_analyse_sites"](),
+                       )
+
+    print("Outputting event table")
+    output_event_table(event_table,
+                       tree["analyses"]["pandda_analyse_events"](),
+                       )
+
+    pandda_finish_time = time.time()
+    print("PanDDA ran in: {}".format(pandda_finish_time - pandda_start_time))
