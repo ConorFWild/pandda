@@ -2,6 +2,10 @@ from __future__ import print_function
 
 import os, sys, glob, time, re, gc
 
+import matplotlib
+matplotlib.use("agg")
+from matplotlib import pyplot
+
 import pathlib as p
 import copy, warnings
 from collections import OrderedDict

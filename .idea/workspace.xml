@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1bfa910-d872-4280-ac7e-f7534c90741d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pandda_2/processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/pandda_2/processor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/program/pandda_2_standard.py" beforeDir="false" afterPath="$PROJECT_DIR$/program/pandda_2_standard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pandda_2/statistical_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/pandda_2/statistical_model.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,18 +17,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="377">
               <caret line="265" column="55" selection-start-line="265" selection-start-column="51" selection-end-line="265" selection-end-column="55" />
-              <folding>
-                <element signature="e#0#35#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pandda_2/make_event_table.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="73" selection-start-line="26" selection-start-column="73" selection-end-line="26" selection-end-column="73" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -56,7 +42,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pandda_2/processor.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="240">
@@ -85,6 +71,19 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="224">
               <caret line="194" column="31" selection-start-line="194" selection-start-column="31" selection-end-line="194" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pandda_2/statistical_model.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
+              <folding>
+                <element signature="e#0#37#0" expanded="true" />
+                <element signature="e#2014#2015#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -134,7 +133,6 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>map_loa</find>
-      <find>Task</find>
       <find>gc</find>
       <find>event_tabl</find>
       <find>output</find>
@@ -163,6 +161,7 @@
       <find>make_eve</find>
       <find>Make</find>
       <find>anal</find>
+      <find>Task</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -195,7 +194,6 @@
         <option value="$PROJECT_DIR$/pandda_2/cluster_outliers.py" />
         <option value="$PROJECT_DIR$/pandda_2/get_reference_map.py" />
         <option value="$PROJECT_DIR$/pandda_2/debug.py" />
-        <option value="$PROJECT_DIR$/pandda_2/statistical_model.py" />
         <option value="$PROJECT_DIR$/pandda_2/filter_clusters.py" />
         <option value="$PROJECT_DIR$/pandda_2/event_analyser.py" />
         <option value="$PROJECT_DIR$/pandda_2/make_event_map.py" />
@@ -222,6 +220,7 @@
         <option value="$PROJECT_DIR$/program/pandda_2_standard.py" />
         <option value="$PROJECT_DIR$/pandda_2/pandda_phil.py" />
         <option value="$PROJECT_DIR$/pandda_2/processor.py" />
+        <option value="$PROJECT_DIR$/pandda_2/statistical_model.py" />
       </list>
     </option>
   </component>
@@ -463,18 +462,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pandda_2/statistical_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-720">
-          <caret line="753" column="14" selection-start-line="753" selection-start-column="14" selection-end-line="753" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-            <element signature="e#2014#2015#0" />
-            <element signature="e#24776#24804#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pandda_2/make_event_map.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -694,13 +681,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pandda_2/pandda_phil.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="194" column="31" selection-start-line="194" selection-start-column="31" selection-end-line="194" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/program/pandda_2_standard.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="347">
@@ -717,6 +697,24 @@
           <caret line="40" column="26" selection-start-line="40" selection-start-column="26" selection-end-line="40" selection-end-column="26" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pandda_2/pandda_phil.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="194" column="31" selection-start-line="194" selection-start-column="31" selection-end-line="194" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pandda_2/statistical_model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+            <element signature="e#2014#2015#0" />
           </folding>
         </state>
       </provider>
