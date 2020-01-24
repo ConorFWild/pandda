@@ -29,17 +29,24 @@ class DefineTree:
                  ):
         tree = Dir(name="pandda_test",
                    root=self.output_dir,
-                   children={"datasets": Dir(name="datasets",
-                                             children={dtag: Dir(name=dtag,
-                                                                 children={"z_map": File(name="zmap.ccp4"),
-                                                                           "event_map": IndexedFile(
-                                                                               name="event_map_{}.ccp4"),
-                                                                           }
-                                                                 )
-                                                       for dtag, dts
-                                                       in dataset.datasets.items()
-                                                       },
-                                             ),
+                   children={"processed_datasets": Dir(name="processed_datasets",
+                                                       children={dtag: Dir(name=dtag,
+                                                                           children={"z_map": File(name="{}-z_map.native.ccp4".format(dtag)),
+                                                                                     "event_map": MultiIndexedFile(name="{}-event_{}_1-BDC_{}_map.native.ccp4"),
+                                                                                     "autobuilt": Dir(name="autobuilt",
+                                                                                                      children={"dummy": File(name="dummy")},
+                                                                                                      ),
+                                                                                     "initial_data": File(name="{}-pandda-input.mtz".format(dtag)),
+                                                                                     "initial_model": File(name="{}-pandda-input.pdb".format(dtag)),
+                                                                                     "ligand_files": Dir(name="ligand_files",
+                                                                                                         children={"dummy": File(name="dummy")},
+                                                                                                         ),
+                                                                                     }
+                                                                           )
+                                                                 for dtag, dts
+                                                                 in dataset.datasets.items()
+                                                                 },
+                                                       ),
                              "shells": Dir(name="shells",
                                            children={shell_num: Dir(name=str(shell_num),
                                                                     children={"mean_map": File(name="mean_map.ccp4"),
@@ -56,13 +63,17 @@ class DefineTree:
                                              children={"pandda_analyse_events": File(name="pandda_analyse_events.csv"),
                                                        "pandda_analyse_sites": File(name="pandda_analyse_sites.csv"),
                                                        },
-                                             )
+                                             ),
+                             "ligand_files": Dir(name="ligand_files",
+                                                 children={"dummy": File(name="dummy")},
+                                                 ),
+                             "modelled_structures": Dir(name="modelled_structures",
+                                                        children={"dummy": File(name="dummy")},
+                                                        ),
                              }
                    )
 
         return tree
-
-
 
 
 class PanddaOutputSetup:
@@ -345,6 +356,26 @@ class IndexedFile:
         if not path:
             path = self.path
         return p.Path(str(path).format(index))
+
+    def make(self, path=None, overwrite=True):
+        return
+
+class MultiIndexedFile:
+    def __init__(self,
+                 name=None,
+                 root=None
+                 ):
+        self.name = name
+
+        if root:
+            self.path = p.Path(root) / self.name
+        else:
+            self.path = p.Path(self.name)
+
+    def __call__(self, indexes, path=None):
+        if not path:
+            path = self.path
+        return p.Path(str(path).format(*indexes))
 
     def make(self, path=None, overwrite=True):
         return

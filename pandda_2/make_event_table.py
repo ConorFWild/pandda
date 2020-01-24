@@ -131,6 +131,18 @@ class PanDDADefaultEventTableShell:
                   "global_correlation_to_average_map": analysis["global_corr"],
                   "local_correlation_to_average_map": analysis["local_corr"],
                   "analysed_resolution": analysed_resolution,
+                  "map_uncertainty": 0,
+                  "refx": 0,
+                  "refy": 0,
+                  "refz": 0,
+                  "r_work": dataset.model.input.get_r_rfree_sigma().r_work,
+                  "r_free": dataset.model.input.get_r_rfree_sigma().r_free,
+                  "rejected - total": False,
+                  "noisy zmap": False,
+                  "analysed": False,
+                  "interesting": False,
+                  "exclude_from_zmap_analysis": False,
+                  "exclude_from_characterisation": False,
                   }
 
         return record

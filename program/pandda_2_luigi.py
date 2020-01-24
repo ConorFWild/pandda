@@ -37,6 +37,7 @@ from pandda_2 import (config,
                       create_event_table,
                       output_event_table,
                       standard_pandda,
+                      autobuild,
                       )
 
 
@@ -161,6 +162,9 @@ if __name__ == "__main__":
     # Get event table outputter
     output_event_table = output_event_table.OutputEventTable()
 
+    # Autobuilders
+    autobuilder = autobuild.AutobuildQFit()
+
     # Define program
     print("Loading dataset")
     dataset = load_dataset()
@@ -213,11 +217,50 @@ if __name__ == "__main__":
                                      len(shells),
                                      )
 
+    print(event_table)
+
     print("Creating sites table")
-    sites_table = create_sites_table(event_table,
-                                     grid,
-                                     reference,
-                                     )
+    sites_table, events_table_with_sites = create_sites_table(event_table,
+                                                              grid,
+                                                              reference,
+                                                              )
+
+    print(events_table_with_sites)
+
+    # print("Autobuilding")
+    # autobuilders = []
+    # for index, event in events_table_with_sites.iterrows():
+    #     dtag = event["dtag"]
+    #     analysed_resolution = event["analysed_resolution"]
+    #     bdc = event["1-BDC"]
+    #     event_idx = event["event_idx"]
+    #     print(tree["processed_datasets"][dtag]["initial_model"](),
+    #           tree["processed_datasets"][dtag]["ligand_files"]().glob("*.pdb").next(),
+    #           tree["processed_datasets"][dtag]["autobuilt"](),
+    #           analysed_resolution,
+    #           event,
+    #           )
+    #     autobuild_event = TaskWrapper(autobuilder,
+    #                                   protein_model_path=tree["processed_datasets"][dtag]["initial_model"](),
+    #                                   ligand_model_path=tree["processed_datasets"][dtag]["ligand_files"]().glob("*.pdb").next(),  # TODO: fix
+    #                                   event_map_path=tree["processed_datasets"][dtag]["event_map"]([dtag,
+    #                                                                                                event_idx ,
+    #                                                                                                bdc,
+    #                                                                                                 ],
+    #                                                                                                ),
+    #                                   output_dir_path=tree["processed_datasets"][dtag]["autobuilt"](),
+    #                                   resolution=analysed_resolution,
+    #                                   event=event,
+    #                                   )
+    #     autobuilders.append(autobuild_event)
+    # autobuilt = processer(autobuilders,
+    #                          output_paths=[tree["processed_datasets"][dtag]["autobuilt"]()
+    #                                        for dtag
+    #                                        in events_table_with_sites["dtag"]
+    #                                        ],
+    #                          result_loader=None,
+    #                          shared_tmp_dir=tree["processed_datasets"](),
+    #                          )
 
     print("Outputting event table")
     output_sites_table(sites_table,
@@ -225,7 +268,7 @@ if __name__ == "__main__":
                        )
 
     print("Outputting event table")
-    output_event_table(event_table,
+    output_event_table(events_table_with_sites,
                        tree["analyses"]["pandda_analyse_events"](),
                        )
 

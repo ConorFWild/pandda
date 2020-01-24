@@ -166,3 +166,22 @@ class ProcessorDictJoblib:
         repr["cpus"] = self.cpus
         repr["verbosity"] = self.verbosity
         return repr
+
+
+class ProcessorJoblib:
+    def __init__(self,
+                 cpus=21,
+                 verbosity=8,
+                 ):
+        self.cpus = cpus
+        self.verbosity = verbosity
+
+    def __call__(self, funcs):
+        results = joblib.Parallel(n_jobs=self.cpus,
+                                  verbose=self.verbosity,
+                                  )(joblib.delayed(func)()
+                                    for func
+                                    in funcs
+                                    )
+
+        return results

@@ -225,7 +225,7 @@ class ProcessShell:
                 z_map_funcs[dtag] = TaskWrapper(self.make_z_map,
                                                 xmaps[dtag],
                                                 truncated_datasets[dtag],
-                                                self.tree["datasets"][dtag]["z_map"](),
+                                                self.tree["processed_datasets"][dtag]["z_map"](),
                                                 shell_fit_model_scattered,
                                                 self.grid,
                                                 )
@@ -240,8 +240,11 @@ class ProcessShell:
                                                                     int(event_id[1]) - 1],
                                                                 events_analysed_computed[dtag][
                                                                     event_id]["estimated_bdc"],
-                                                                self.tree["datasets"][dtag][
-                                                                    "event_map"](event_id[1]),
+                                                                self.tree["processed_datasets"][dtag]["event_map"]([dtag,
+                                                                                 event_id[1],
+                                                                                 round(1-events_analysed_computed[dtag][event_id]["estimated_bdc"], 2),
+                                                                                                                    ]
+                                                                                 ),
                                                                 self.grid,
                                                                 )
 

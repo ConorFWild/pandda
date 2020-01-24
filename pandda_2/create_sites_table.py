@@ -36,11 +36,12 @@ class CreateSitesTable:
                                    linkage='average',
                                    )
 
-        site_list.sort(key=lambda s: (s.info.num_events, max([e.cluster.max
-                                                              for e
-                                                              in s.children
-                                                              ]
-                                                             )
+        site_list.sort(key=lambda s: (s.info.num_events,
+                                      max([e.cluster.max
+                                           for e
+                                           in s.children
+                                           ]
+                                          )
                                       ),
                        reverse=True).renumber()
 
@@ -71,7 +72,18 @@ class CreateSitesTable:
 
         sites_table = pd.DataFrame(records)
 
-        return sites_table
+        events_table["dtag"] = events_table["dtag"].astype(str)
+        events_table["event_idx"] = events_table["event_idx"].astype(str)
+        events_table_with_sites = events_table.set_index(["dtag", "event_idx"])
+
+        print(events_table)
+
+        for site in site_list.children:
+            for event in site.children:
+                print(event.id)
+                events_table_with_sites.loc[(str(event.id[0]), str(event.id[1])), "site_idx"] = site.id
+
+        return sites_table, events_table_with_sites
 
         #
         # # Update the pandda tables?
