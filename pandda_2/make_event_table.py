@@ -48,6 +48,7 @@ class PanDDADefaultEventTableShell:
                  events_analysed,
                  analysed_resolution,
                  ):
+
         event_table = self.make_event_table(datasets,
                                             events,
                                             grid,
@@ -183,3 +184,35 @@ class PanDDADefaultEventTableShell:
             # sort_eve = sort_eve.join(comb_tab, how='inner')
 
             sort_eve.to_csv(path_or_buf=str(table_path))
+
+        else:
+            standin_event_table = pd.DataFrame(index=("dtag",
+                                                      "event_idx",
+                                                      ),
+                                               columns=["site_idx", "1-BDC",
+                                                        "z_peak",
+                                                        "z_mean",
+                                                        "cluster_size",
+                                                        "x",
+                                                        "y",
+                                                        "z",
+                                                        "global_correlation_to_average_map",
+                                                        "local_correlation_to_average_map",
+                                                        "analysed_resolution",
+                                                        "map_uncertainty",
+                                                        "refx",
+                                                        "refy",
+                                                        "refz",
+                                                        "r_work",
+                                                        "r_free",
+                                                        "rejected - total",
+                                                        "noisy zmap",
+                                                        "analysed",
+                                                        "interesting",
+                                                        "exclude_from_zmap_analysis",
+                                                        "exclude_from_characterisation",
+                                                        ],
+                                               )
+
+            standin_event_table.to_csv(path_or_buf=str(table_path))
+

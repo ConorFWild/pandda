@@ -2,7 +2,7 @@ import os, glob
 
 from bamboo.html import png2base64str
 from pandda.html import PANDDA_HTML_ENV
-from pandda.constants import PanddaHtmlFilenames
+from pandda_inspect.constants import PanddaHtmlFilenames
 
 def write_inspect_html(top_dir, inspector):
 

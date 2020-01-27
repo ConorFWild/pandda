@@ -187,6 +187,10 @@ if __name__ == "__main__":
               in create_shells(dataset)
               }
 
+    for shell_num, shell_dataset in shells.items():
+        print(shell_dataset.get_partition("test"))
+        print(shell_dataset.get_partition("train"))
+
     print("Output")
     tree = output(dataset,
                   shells,
@@ -195,6 +199,15 @@ if __name__ == "__main__":
     print("Processing shells")
     shell_processors = []
     for shell_num, shell_dataset in shells.items():
+        # if shell_num == 5:
+        #     process_shell(shell_dataset = shell_dataset,
+        #                   reference = reference,
+        #                   grid = grid,
+        #                   tree = tree,
+        #                   shell_num = shell_num,
+        #                   )
+
+
         shell_p = TaskWrapper(process_shell,
                               shell_dataset=shell_dataset,
                               reference=reference,

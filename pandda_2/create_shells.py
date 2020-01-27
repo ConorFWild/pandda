@@ -19,11 +19,12 @@ class CreateShells:
 
         # Accumulate datasets until number of characterisation datasets reached
         # The upper bound on this is the lowest res shell possible
-        train_datasets = []
+        train_datasets = {}
         train_res_max = 0
         while len(train_datasets) < self.min_train_datasets:
             train_dataset = all_train_datasets_sorted.pop(0)
-            train_datasets.append(train_dataset)
+            print(train_dataset)
+            train_datasets[train_dataset[0]] = train_dataset[1]
             train_res_max = train_dataset[1].data.summary.high_res
         print("Collected trian datasets")
 
@@ -56,13 +57,24 @@ class CreateShells:
             # Convert test datasets to dict
             test_datasets_dict = {key: value
                                   for key, value
-                                  in test_datasets}
+                                  in test_datasets
+                                  }
 
             # Update test datasets with train datasets
-            test_datasets_dict.update(train_datasets)
+            new_dataset = {key: value for key, value in test_datasets}
+            new_dataset.update(train_datasets)
+
+            print(new_dataset)
 
             # Make new mcd with these datasets
-            dataset = pandda_dataset.new_from_datasets(datasets=test_datasets_dict)
+            dataset = pandda_dataset.new_from_datasets(datasets=new_dataset)
+
+            dataset.set_partition("test",
+                                  list(test_datasets_dict.keys()),
+                                  )
+            dataset.set_partition("train",
+                                  list(train_datasets.keys()),
+                                  )
 
             # yield the dataset for processing
             print("Dataset {} of length {}; res limits ({},{})"
