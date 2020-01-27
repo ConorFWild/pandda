@@ -132,7 +132,7 @@ def make_target_path(dataset_tag, target_dir_path, extension):
     return target_dir_path / (str(dataset_tag) + "-pandda-input" + extension)
 
 
-class CifToPDB:
+class CifToPDBPhenix:
 
     def __init__(self,
                  compound_dir,
@@ -225,11 +225,13 @@ class DatasetFileCopier:
                  copy_pdb=CopyPDB(),
                  copy_mtz=CopyMTZ(),
                  copy_ligand=CopyLigands(),
+                 cif_to_pdb=CifToPDBPhenix,
                  processor=processor.ProcessorJoblib()
                  ):
         self.copy_pdb = copy_pdb
         self.copy_mtz = copy_mtz
         self.copy_ligand = copy_ligand
+        self.cif_to_pdb = cif_to_pdb
         self.processor = processor
 
     def __call__(self,
@@ -262,11 +264,11 @@ class DatasetFileCopier:
             print("\tConverting cifs to ligands for dataset {}".format(dtag))
 
         # Convert any cifs to usable pdbs
-        # self.processor([CifToPDB(compound_dir=tree["processed_datasets"][dtag]["autobuilt"]())
-        #                 for dtag
-        #                 in dataset.datasets.keys()
-        #                 ]
-        #                )
+        self.processor([self.cif_to_pdb(compound_dir=tree["processed_datasets"][dtag]["ligand_files"]())
+                        for dtag
+                        in dataset.datasets.keys()
+                        ]
+                       )
 
     def repr(self):
         repr = OrderedDict()

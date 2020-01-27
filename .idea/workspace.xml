@@ -2,22 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1bfa910-d872-4280-ac7e-f7534c90741d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/pandda_inspect/constants.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pandda_inspect/resources/0.2-sigma-anno.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pandda_inspect/resources/0.2-sigma.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pandda_inspect/resources/1-sigma-anno.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pandda_inspect/resources/1-sigma.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pandda_inspect/resources/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inspect/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pandda_inspect/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inspect/html.py" beforeDir="false" afterPath="$PROJECT_DIR$/pandda_inspect/html.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inspect/ligands.py" beforeDir="false" afterPath="$PROJECT_DIR$/pandda_inspect/ligands.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pandda_2/create_event_table.py" beforeDir="false" afterPath="$PROJECT_DIR$/pandda_2/create_event_table.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pandda_2/create_shells.py" beforeDir="false" afterPath="$PROJECT_DIR$/pandda_2/create_shells.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pandda_2/define_tree.py" beforeDir="false" afterPath="$PROJECT_DIR$/pandda_2/define_tree.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pandda_2/make_event_table.py" beforeDir="false" afterPath="$PROJECT_DIR$/pandda_2/make_event_table.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/program/pandda_2_luigi.py" beforeDir="false" afterPath="$PROJECT_DIR$/program/pandda_2_luigi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pandda_2/copy_dataset_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/pandda_2/copy_dataset_files.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pandda_inspect/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pandda_inspect/__init__.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,7 +14,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pandda_2/define_tree.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="285">
@@ -116,25 +103,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pandda_2/event_analyser.py">
+        <entry file="file://$PROJECT_DIR$/pandda_2/copy_dataset_files.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="38" column="70" selection-start-line="38" selection-start-column="70" selection-end-line="38" selection-end-column="70" />
+            <state relative-caret-position="-208">
+              <caret line="226" column="43" lean-forward="true" selection-start-line="226" selection-start-column="43" selection-end-line="226" selection-end-column="43" />
               <folding>
-                <element signature="e#0#37#0" expanded="true" />
+                <element signature="e#0#35#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pandda_2/cluster_outliers.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pandda_inspect/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="26" selection-start-line="18" selection-start-column="19" selection-end-line="18" selection-end-column="26" />
-              <folding>
-                <element signature="e#0#37#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="465">
+              <caret line="959" column="38" selection-start-line="959" selection-start-column="26" selection-end-line="959" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -150,7 +134,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>CopyM</find>
       <find>make_tar</find>
       <find>CopyL</find>
       <find>rel_s</find>
@@ -180,6 +163,7 @@
       <find>make_eve</find>
       <find>train_data</find>
       <find>write</find>
+      <find>all_residues</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -226,19 +210,19 @@
         <option value="$PROJECT_DIR$/pandda_2/pandda_phil.py" />
         <option value="$PROJECT_DIR$/pandda_2/autobuild.py" />
         <option value="$PROJECT_DIR$/pandda_2/processor.py" />
-        <option value="$PROJECT_DIR$/pandda_2/copy_dataset_files.py" />
         <option value="$PROJECT_DIR$/pandda_2/create_sites_table.py" />
         <option value="$PROJECT_DIR$/inspect/contants.py" />
         <option value="$PROJECT_DIR$/inspect/__init__.py" />
         <option value="$PROJECT_DIR$/pandda_inspect/html.py" />
         <option value="$PROJECT_DIR$/requirements.txt" />
-        <option value="$PROJECT_DIR$/pandda_inspect/__init__.py" />
         <option value="$PROJECT_DIR$/pandda_2/process_shell.py" />
         <option value="$PROJECT_DIR$/pandda_2/create_shells.py" />
         <option value="$PROJECT_DIR$/pandda_2/make_event_table.py" />
         <option value="$PROJECT_DIR$/program/pandda_2_luigi.py" />
         <option value="$PROJECT_DIR$/pandda_2/create_event_table.py" />
         <option value="$PROJECT_DIR$/pandda_2/define_tree.py" />
+        <option value="$PROJECT_DIR$/pandda_2/copy_dataset_files.py" />
+        <option value="$PROJECT_DIR$/pandda_inspect/__init__.py" />
       </list>
     </option>
   </component>
@@ -258,11 +242,6 @@
           <expand>
             <path>
               <item name="pandda_2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pandda_2" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pandda_2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pandda_2" type="462c0819:PsiDirectoryNode" />
               <item name="pandda_2" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -324,7 +303,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="27" width="1536" height="814" extended-state="7" />
+    <frame x="0" y="27" width="1536" height="814" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
@@ -601,16 +580,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pandda_2/copy_dataset_files.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="244" column="27" selection-start-line="244" selection-start-column="27" selection-end-line="244" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pandda_2/transforms.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -633,16 +602,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/requirements.txt">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pandda_inspect/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="792" column="63" selection-start-line="792" selection-start-column="63" selection-end-line="792" selection-end-column="63" />
-          <folding>
-            <element signature="e#1#44#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pandda_2/create_sites_table.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -753,6 +712,23 @@
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pandda_2/copy_dataset_files.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-208">
+          <caret line="226" column="43" lean-forward="true" selection-start-line="226" selection-start-column="43" selection-end-line="226" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pandda_inspect/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="959" column="38" selection-start-line="959" selection-start-column="26" selection-end-line="959" selection-end-column="38" />
         </state>
       </provider>
     </entry>

@@ -958,8 +958,10 @@ class PanddaMolHandler(object):
         set_b_factor_molecule(l, 20)
         # Set the occupancy of the ligand to 2*(1-bdc)
         all_residue_ids = all_residues(l)
+        print(all_residue_ids)
+        #  TODO: What is this mystery bool from phenix.elbow
         if all_residue_ids:
-            for res_chn, res_num, res_ins in all_residue_ids:
+            for mystery_bool, res_chn, res_num, res_ins in all_residue_ids:
                 set_alt_conf_occ(l, res_chn, res_num, res_ins, [['', 2.0 * event.est_1_bdc]])
         return l
 
