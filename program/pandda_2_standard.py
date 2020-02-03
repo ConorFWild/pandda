@@ -159,7 +159,7 @@ if __name__ == "__main__":
     output_event_table = output_event_table.OutputEventTable()
 
     # Autobuilders
-    autobuilder = autobuild.AutobuildQFit()
+    # autobuilder = autobuild.AutobuildQFit()
 
     # Define program
     print("Loading dataset")
