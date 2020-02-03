@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap+Tables -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+      
+    {% if table is defined %}
+    <script type="text/javascript" class="init">
+$(document).ready(function() {
+    $('#main-table').DataTable();
+} );
+    </script>   
+    {% endif %}
+    
+    <title>{{ header }}</title>
+
+  </head>
+  <body>
+
+    <div class="container">
+      <h1>{{ title }}</h1>
+      <h2>{{ introduction }}</h2>
+      {% if progress_bar is defined %}
+      <div class="row">
+        {% for bar in progress_bar -%}
+        <div class="col-xs-12">
+          <p>{{ bar.title }}</p>
+          <div class="progress">
+            {% for seg in bar.data -%}
+            <div class="progress-bar progress-bar-{{ seg.colour }}" style="width:{{ seg.size }}%">
+              <span class="sr-only">{{ seg.text }}</span>
+              <strong>{{ seg.text ~ " (" ~ seg.size|int() ~ "%)" }}</strong>
+            </div>
+            {% endfor -%}
+          </div>
+        </div>
+        {% endfor -%}
+      </div>
+      {% endif %}
+      {% if summary_bar is defined %}
+      <div class="row">
+        {% for bar in summary_bar -%}
+        <div class="col-xs-12 col-sm-12 col-md-{{ bar.width }}"><div class="alert alert-{{ bar.colour }}" role="alert"><strong>{{ bar.text }}</strong></div></div>
+        {% endfor -%}
+      </div>
+      {% endif %}
+      {% if top_panels is defined %}
+      <div class="row">
+        {% for panel in top_panels %}
+        <div class="col col-xs-12 col-md-{{ panel.width }}">
+          <div class="panel panel-{{ panel.color }}">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{ panel.title }}</h3>
+            </div> 
+            <div class="panel-body">
+              <p>{{ panel.text }}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor -%}
+      </div>
+      {% endif %}
+      {% if top_images is defined %}
+      <div class="row">
+        {% for img in top_images -%}
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+           <p>{{ img.title }}</p>
+           <img class="img-responsive" src="{{ img.path }}" alt="No Image" {% if img.tooltip is defined -%}title="{{ img.tooltip }}"{% endif -%}>
+        </div>
+        {% endfor -%}
+      </div>
+      {% endif %}
+      {% if table is defined %}
+      <hr>
+      <div class="table-responsive">
+        <table id="main-table" class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              {% for heading in table.column_headings -%}
+              <th class="text-nowrap">{{ heading }}</th>
+              {% endfor -%}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table.rows -%}
+              {% if row.colour is defined %}<tr class={{ row.colour }}>{% else %}<tr>{% endif %}
+              <th class="text-nowrap" scope="row">{{ row.heading }}</th>
+              {% for col in row.columns -%}
+                <td class="text-nowrap {% if col.colour is defined -%}text-{{col.colour}}{% endif -%}"><span class="glyphicon {% if col.icon is defined -%}glyphicon-{{col.icon}}{% endif -%}" aria-hidden="true"></span> {{ col.message }}</td>
+              {% endfor -%}
+              {% if row.colour is defined %}<td><span class="label label-{{ row.colour }}">{{ row.message }}</span></td>{% endif -%}
+            </tr>
+            {% endfor -%}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+      <div class="alert alert-info" role="alert">PANDDAs. Written by Nicholas M Pearce in 2015/2016.</div>
+    </div>
+
+  </body>
+</html>
+
