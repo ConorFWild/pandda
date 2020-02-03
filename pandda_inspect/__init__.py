@@ -4,7 +4,6 @@ import pandas
 
 from bamboo.plot import bar
 
-from pandda import LOGO_PATH
 from pandda_inspect import html as inspect_html
 # from pandda_inspect.constants import (PanddaAnalyserFilenames,
 #                                PanddaInspectorFilenames,
@@ -23,6 +22,7 @@ from pandda_inspect.constants import (PanddaAnalyserFilenames,
 import pandda_inspect.resources
 
 IMG_DIR = os.path.realpath(pandda_inspect.resources.__path__[0])
+LOGO_PATH = os.path.join(os.path.realpath(pandda_inspect.resources.__path__[0]), 'pandda-logo-small.png')
 
 # ANGLES FOR COLOURS
 COLOUR_YELLOW = 20.0

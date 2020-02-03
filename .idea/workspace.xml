@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a1bfa910-d872-4280-ac7e-f7534c90741d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/program/pandda_2_standard.py" beforeDir="false" afterPath="$PROJECT_DIR$/program/pandda_2_standard.py" afterDir="false" />
-    </list>
+    <list default="true" id="a1bfa910-d872-4280-ac7e-f7534c90741d" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,11 +34,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/program/pandda_2_standard.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="38" selection-start-line="38" selection-end-line="38" />
+            <state relative-caret-position="270">
+              <caret line="90" column="21" lean-forward="true" selection-start-line="90" selection-start-column="21" selection-end-line="90" selection-end-column="21" />
+              <folding>
+                <element signature="e#0#37#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -73,6 +74,15 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="614">
               <caret line="94" selection-start-line="94" selection-end-line="102" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pandda_inspect/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="6" column="23" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -115,15 +125,6 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pandda_2/options.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="29" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -135,8 +136,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>CopyL</find>
-      <find>rel_s</find>
       <find>event</find>
       <find>CopyLi</find>
       <find>copy_da</find>
@@ -165,6 +164,8 @@
       <find>write</find>
       <find>all_residues</find>
       <find>proces</find>
+      <find>auto</find>
+      <find>LOGO</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -249,12 +250,13 @@
             <path>
               <item name="pandda_2" type="b2602c69:ProjectViewProjectNode" />
               <item name="pandda_2" type="462c0819:PsiDirectoryNode" />
-              <item name="pandda_2" type="462c0819:PsiDirectoryNode" />
+              <item name="pandda_inspect" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="pandda_2" type="b2602c69:ProjectViewProjectNode" />
               <item name="pandda_2" type="462c0819:PsiDirectoryNode" />
               <item name="pandda_inspect" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="pandda_2" type="b2602c69:ProjectViewProjectNode" />
@@ -269,7 +271,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/inspect/resources" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/pandda_inspect/resources" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -310,7 +312,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1536" height="814" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.19312169" />
@@ -612,13 +613,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pandda_inspect/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="14115">
-          <caret line="963" column="30" selection-start-line="963" selection-start-column="30" selection-end-line="963" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pandda_2/map_loader.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -709,8 +703,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/program/pandda_2_standard.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="38" selection-start-line="38" selection-end-line="38" />
+        <state relative-caret-position="270">
+          <caret line="90" column="21" lean-forward="true" selection-start-line="90" selection-start-column="21" selection-end-line="90" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pandda_inspect/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="23" />
         </state>
       </provider>
     </entry>
