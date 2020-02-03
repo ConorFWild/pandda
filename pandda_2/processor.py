@@ -5,6 +5,8 @@ import joblib
 import luigi
 from pandda_2.luigi_sge import SGEJobTask
 
+from libtbx import easy_mp
+
 
 # class Processor:
 #     def __init__(self):
@@ -106,8 +108,6 @@ class ProcessorLuigi():
 
         return results
 
-
-
     def repr(self):
         repr = OrderedDict()
         repr["jobs"] = self.jobs
@@ -185,3 +185,40 @@ class ProcessorJoblib:
                                     )
 
         return results
+
+
+def wrap_call(f):
+    return f()
+
+
+class ProcessorDictEasyMP:
+    def __init__(self,
+                 cpus=21,
+                 verbosity=8,
+                 ):
+        self.cpus = cpus
+        self.verbosity = verbosity
+
+    def __call__(self,
+                 funcs,
+                 ):
+        keys = funcs.keys()
+        values = [funcs[key] for key in keys]
+
+        results = easy_mp.pool_map(fixed_func=wrap_call,
+                                   args=values,
+                                   processes=int(self.cpus),
+                                   )
+
+        results_dict = {key: results[i]
+                        for i, key
+                        in enumerate(keys)
+                        }
+
+        return results_dict
+
+    def repr(self):
+        repr = OrderedDict()
+        repr["cpus"] = self.cpus
+        repr["verbosity"] = self.verbosity
+        return repr

@@ -295,6 +295,11 @@ class Settings:
         self.cpus = config_obj.cpus
         self.verbose = config_obj.verbose
 
+########################################################################################################################
+
+class Autobuilding:
+    def __init__(self, config_obj):
+        self.autobuild = config_obj.autobuild
 
 ########################################################################################################################
 class Config:
@@ -307,6 +312,7 @@ class Config:
         self.params = Params(config_obj.pandda.params)
         self.processing = Processing(config_obj.pandda.processing)
         self.results = Results(config_obj.pandda.results)
+        self.autobuilding = Autobuilding(config_obj.pandda.autobuilding)
 
     # def replace_param_phil(self, param_obj, phil_obj):
     #     # loop over param obj's atributes, try to match to phil attributes

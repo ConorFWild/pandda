@@ -403,6 +403,17 @@ pandda
                 .type = choice
         }
     }
+    
+    autobuilding
+        .help = "Autobuilding into PanDDA events"
+    {
+        autobuild = False
+            .help = "Whether or not to do autobuilding"
+            .type = bool
+            
+    }
+    
+    
     exit_flags
         .help = "Flags for terminating the program early"
     {

@@ -34,7 +34,11 @@ class DefineTree:
                                                                            children={"z_map": File(name="{}-z_map.ccp4".format(dtag)),
                                                                                      "event_map": MultiIndexedFile(name="{}-event_{}_1-BDC_{}_map.ccp4"),
                                                                                      "autobuilt": Dir(name="autobuilt",
-                                                                                                      children={"dummy": File(name="dummy")},
+                                                                                                      children={"dummy": File(name="dummy"),
+                                                                                                                "stripped_protein": File("stripped_protein.pdb"),
+                                                                                                                "event": MultiIndexedDir(name="event_{}_{}"),
+                                                                                                                "initial_build": MultiIndexedFile(name="initial_build_{}_{}.pdb"),
+                                                                                                                },
                                                                                                       ),
                                                                                      "initial_data": File(name="{}-pandda-input.mtz".format(dtag)),
                                                                                      "initial_model": File(name="{}-pandda-input.pdb".format(dtag)),
@@ -359,6 +363,35 @@ class IndexedFile:
 
     def make(self, path=None, overwrite=True):
         return
+
+class MultiIndexedDir:
+    def __init__(self,
+                 name=None,
+                 root=None
+                 ):
+        self.name = name
+
+        if root:
+            self.path = p.Path(root) / self.name
+        else:
+            self.path = p.Path(self.name)
+
+    def __call__(self, indexs, path=None):
+        if not path:
+            path = self.path
+
+        formatted_path = str(path).format(*indexs)
+
+        try:
+            os.mkdir(formatted_path)
+        except Exception as e:
+            pass
+
+        return p.Path(formatted_path)
+
+    def make(self, path=None, overwrite=True):
+        return
+
 
 class MultiIndexedFile:
     def __init__(self,

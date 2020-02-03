@@ -53,12 +53,14 @@ def place_ligand(ligand_model_path,
                  event,
                  output_path,
                  ):
-    ligand = PandasPdb().read_pdb(ligand_model_path)
+    ligand = PandasPdb().read_pdb(str(ligand_model_path))
 
-    ligand_coords = ligand.df["HETATM"]["x_coord", "y_coord", "z_coord"]
+    ligand_coords = ligand.df["HETATM"][["x_coord", "y_coord", "z_coord"]]
 
     ligand_com = ligand_coords.mean(axis=1)
 
+
+    print(event)
     event_com = np.array(event.x, event.y, event.z)
 
     translation = event_com - ligand_com

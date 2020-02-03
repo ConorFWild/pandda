@@ -207,7 +207,6 @@ if __name__ == "__main__":
         #                   shell_num = shell_num,
         #                   )
 
-
         shell_p = TaskWrapper(process_shell,
                               shell_dataset=shell_dataset,
                               reference=reference,
@@ -240,19 +239,38 @@ if __name__ == "__main__":
 
     print(events_table_with_sites)
 
-    # print("Autobuilding")
-    # autobuilders = []
-    # for index, event in events_table_with_sites.iterrows():
-    #     dtag = event["dtag"]
-    #     analysed_resolution = event["analysed_resolution"]
-    #     bdc = event["1-BDC"]
-    #     event_idx = event["event_idx"]
-    #     print(tree["processed_datasets"][dtag]["initial_model"](),
-    #           tree["processed_datasets"][dtag]["ligand_files"]().glob("*.pdb").next(),
-    #           tree["processed_datasets"][dtag]["autobuilt"](),
-    #           analysed_resolution,
-    #           event,
-    #           )
+    print("Autobuilding")
+    autobuilders = {}
+    for index, event in events_table_with_sites.iterrows():
+
+        print("index: {}".format(index))
+        print("event: {}".format(event))
+        dtag = index[0]
+        analysed_resolution = event["analysed_resolution"]
+        bdc = event["1-BDC"]
+        event_idx = int(float(index[1]))
+
+
+
+        autobuilders[event_idx] = autobuilder(
+            protein_model_path=tree["processed_datasets"][dtag]["initial_model"](),
+            ligand_model_path=tree["processed_datasets"][dtag]["ligand_files"]().glob("*.pdb").next(),  # TODO: fix
+            event_map_path=tree["processed_datasets"][dtag]["event_map"]([dtag,
+                                                                          event_idx,
+                                                                          bdc,
+                                                                          ],
+                                                                         ),
+            output_dir_path=tree["processed_datasets"][dtag]["autobuilt"](),
+            resolution=analysed_resolution,
+            event=event,
+        )
+        print(tree["processed_datasets"][dtag]["initial_model"](),
+              tree["processed_datasets"][dtag]["ligand_files"]().glob("*.pdb").next(),
+              tree["processed_datasets"][dtag]["autobuilt"](),
+              analysed_resolution,
+              event,
+              )
+
     #     autobuild_event = TaskWrapper(autobuilder,
     #                                   protein_model_path=tree["processed_datasets"][dtag]["initial_model"](),
     #                                   ligand_model_path=tree["processed_datasets"][dtag]["ligand_files"]().glob("*.pdb").next(),  # TODO: fix
@@ -274,6 +292,10 @@ if __name__ == "__main__":
     #                          result_loader=None,
     #                          shared_tmp_dir=tree["processed_datasets"](),
     #                          )
+
+    autobuilt = process_in_shell(autobuilders)
+
+    exit()
 
     print("Outputting event table")
     output_sites_table(sites_table,
