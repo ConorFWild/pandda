@@ -31,7 +31,6 @@ from pandda_2 import (config,
                       make_event_table,
                       process_shell,
                       process_shells,
-                      processor,
                       create_sites_table,
                       output_sites_table,
                       create_event_table,
@@ -39,6 +38,8 @@ from pandda_2 import (config,
                       standard_pandda,
                       autobuild,
                       )
+
+from pandda_2 import processor_no_luigi as processor
 
 
 class TaskWrapper:
