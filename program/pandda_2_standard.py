@@ -36,7 +36,6 @@ from pandda_2 import (config,
                       create_event_table,
                       output_event_table,
                       standard_pandda,
-                      autobuild,
                       )
 
 from pandda_2 import processor_no_luigi as processor
