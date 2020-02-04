@@ -226,13 +226,15 @@ class DatasetFileCopier:
                  copy_mtz=CopyMTZ(),
                  copy_ligand=CopyLigands(),
                  cif_to_pdb=CifToPDBPhenix,
-                 processor=processor.ProcessorJoblib()
+                 processor=processor.ProcessorJoblib(),
+                 autobuild=False
                  ):
         self.copy_pdb = copy_pdb
         self.copy_mtz = copy_mtz
         self.copy_ligand = copy_ligand
         self.cif_to_pdb = cif_to_pdb
         self.processor = processor
+        self.autobuild = autobuild
 
     def __call__(self,
                  dataset,
@@ -264,11 +266,12 @@ class DatasetFileCopier:
             print("\tConverting cifs to ligands for dataset {}".format(dtag))
 
         # Convert any cifs to usable pdbs
-        self.processor([self.cif_to_pdb(compound_dir=tree["processed_datasets"][dtag]["ligand_files"]())
-                        for dtag
-                        in dataset.datasets.keys()
-                        ]
-                       )
+        if self.autobuild:
+            self.processor([self.cif_to_pdb(compound_dir=tree["processed_datasets"][dtag]["ligand_files"]())
+                            for dtag
+                            in dataset.datasets.keys()
+                            ]
+                           )
 
     def repr(self):
         repr = OrderedDict()

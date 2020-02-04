@@ -36,7 +36,7 @@ def merge_event_tables(event_tables):
                              ]
                             )
 
-    event_table = event_table.dropna()
+    event_table = event_table.fillna()
 
     # event_table = event_table.set_index(["dtag", "event_idx"])
     return event_table
