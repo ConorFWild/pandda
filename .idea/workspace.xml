@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1bfa910-d872-4280-ac7e-f7534c90741d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/pandda_2/make_event_table.py" beforeDir="false" afterPath="$PROJECT_DIR$/pandda_2/make_event_table.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pandda_2/copy_dataset_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/pandda_2/copy_dataset_files.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,8 +45,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pandda_2/create_event_table.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="347">
-              <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+            <state relative-caret-position="377">
+              <caret line="32" column="55" lean-forward="true" selection-start-line="32" selection-start-column="55" selection-end-line="32" selection-end-column="55" />
             </state>
           </provider>
         </entry>
@@ -60,11 +60,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pandda_2/make_event_table.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="542">
-              <caret line="213" column="48" lean-forward="true" selection-start-line="188" selection-start-column="12" selection-end-line="213" selection-end-column="48" />
+            <state relative-caret-position="332">
+              <caret line="199" column="78" lean-forward="true" selection-start-line="199" selection-start-column="78" selection-end-line="199" selection-end-column="78" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -81,11 +81,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pandda_2/copy_dataset_files.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-208">
-              <caret line="229" column="32" selection-start-line="229" selection-start-column="32" selection-end-line="229" selection-end-column="32" />
+            <state relative-caret-position="647">
+              <caret line="275" column="29" selection-start-line="275" selection-start-column="29" selection-end-line="275" selection-end-column="29" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -130,7 +130,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>CopyLi</find>
       <find>copy_da</find>
       <find>site_list</find>
       <find>Site</find>
@@ -160,6 +159,7 @@
       <find>LOGO</find>
       <find>auto</find>
       <find>create_eve</find>
+      <find>copy_li</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -216,9 +216,9 @@
         <option value="$PROJECT_DIR$/pandda_inspect/__init__.py" />
         <option value="$PROJECT_DIR$/pandda_inspect/resources/html.py" />
         <option value="$PROJECT_DIR$/pandda_inspect/html.py" />
-        <option value="$PROJECT_DIR$/pandda_2/copy_dataset_files.py" />
         <option value="$PROJECT_DIR$/pandda_2/create_event_table.py" />
         <option value="$PROJECT_DIR$/pandda_2/make_event_table.py" />
+        <option value="$PROJECT_DIR$/pandda_2/copy_dataset_files.py" />
       </list>
     </option>
   </component>
@@ -649,16 +649,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pandda_2/copy_dataset_files.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-208">
-          <caret line="229" column="32" selection-start-line="229" selection-start-column="32" selection-end-line="229" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/program/pandda_2_standard.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -675,8 +665,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pandda_2/create_event_table.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+        <state relative-caret-position="377">
+          <caret line="32" column="55" lean-forward="true" selection-start-line="32" selection-start-column="55" selection-end-line="32" selection-end-column="55" />
         </state>
       </provider>
     </entry>
@@ -689,8 +679,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pandda_2/make_event_table.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="542">
-          <caret line="213" column="48" lean-forward="true" selection-start-line="188" selection-start-column="12" selection-end-line="213" selection-end-column="48" />
+        <state relative-caret-position="332">
+          <caret line="199" column="78" lean-forward="true" selection-start-line="199" selection-start-column="78" selection-end-line="199" selection-end-column="78" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pandda_2/copy_dataset_files.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="647">
+          <caret line="275" column="29" selection-start-line="275" selection-start-column="29" selection-end-line="275" selection-end-column="29" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>

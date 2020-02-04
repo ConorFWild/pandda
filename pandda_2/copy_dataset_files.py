@@ -77,10 +77,12 @@ class CopyLigands:
                  ):
         self.regex = regex
 
-    def __call__(self, dataset, output_path):
+    def __call__(self, dataset, output_path, regex):
         try:
 
-            source_ligand_path = self.get_ligand_path(dataset)
+            source_ligand_path = self.get_ligand_path(dataset,
+                                                      regex,
+                                                      )
 
             # print(source_ligand_path)
 
@@ -104,10 +106,11 @@ class CopyLigands:
 
     def get_ligand_path(self,
                         dataset,
+                        regex="**/ligand.cif",
                         ):
-        print(p.Path(dataset.data.filename).parent)
-        print(self.regex)
-        return next(p.Path(dataset.data.filename).parent.glob(self.regex))
+        # print(p.Path(dataset.data.filename).parent)
+        # print(self.regex)
+        return next(p.Path(dataset.data.filename).parent.glob(regex))
 
     def get_local_ligand_path(self,
                               dataset,
@@ -235,6 +238,8 @@ class DatasetFileCopier:
         self.cif_to_pdb = cif_to_pdb
         self.processor = processor
         self.autobuild = autobuild
+        self.ligand_cif_regex = "**/ligand.cif"
+        self.ligand_pdb_regex = "**/ligand.pdb"
 
     def __call__(self,
                  dataset,
@@ -257,10 +262,17 @@ class DatasetFileCopier:
 
             self.copy_ligand(d,
                              tree["processed_datasets"][dtag]["ligand_files"](),
+                             regex=self.ligand_cif_regex,
+                             )
+
+            self.copy_ligand(d,
+                             tree["processed_datasets"][dtag]["ligand_files"](),
+                             regex=self.ligand_pdb_regex,
                              )
 
             self.copy_ligand(d,
                              tree["processed_datasets"][dtag]["autobuilt"](),
+                             self.ligand_cif_regex,
                              )
 
             print("\tConverting cifs to ligands for dataset {}".format(dtag))
