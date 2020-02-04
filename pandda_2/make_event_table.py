@@ -186,10 +186,9 @@ class PanDDADefaultEventTableShell:
             sort_eve.to_csv(path_or_buf=str(table_path))
 
         else:
-            standin_event_table = pd.DataFrame(index=("dtag",
-                                                      "event_idx",
-                                                      ),
-                                               columns=["site_idx", "1-BDC",
+            standin_event_table = pd.DataFrame(columns=["dtag",
+                                                        "event_idx",
+                                                        "site_idx", "1-BDC",
                                                         "z_peak",
                                                         "z_mean",
                                                         "cluster_size",
