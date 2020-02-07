@@ -19,7 +19,7 @@ def easy_directory(directory):
     return directory
 
 def rel_symlink(orig, link):
-    """Make a rela  tive symlink from link to orig"""
+    """Make a relative symlink from link to orig"""
     assert os.path.exists(orig), 'FILE DOES NOT EXIST: {!s}'.format(orig)
     assert not os.path.exists(link), 'LINK ALREADY EXISTS: {!s}'.format(link)
     orig = os.path.abspath(orig)

@@ -1,0 +1,77 @@
+REMARK 290                                                                      
+REMARK 290 CRYSTALLOGRAPHIC SYMMETRY                                            
+REMARK 290 SYMMETRY OPERATORS FOR SPACE GROUP: P 42 21 2                        
+REMARK 290                                                                      
+REMARK 290      SYMOP   SYMMETRY                                                
+REMARK 290     NNNMMM   OPERATOR                                                
+REMARK 290       1555   X,Y,Z                                                   
+REMARK 290       2555   -X,-Y,Z                                                 
+REMARK 290       3555   1/2-Y,1/2+X,1/2+Z                                       
+REMARK 290       4555   1/2+Y,1/2-X,1/2+Z                                       
+REMARK 290       5555   1/2-X,1/2+Y,1/2-Z                                       
+REMARK 290       6555   1/2+X,1/2-Y,1/2-Z                                       
+REMARK 290       7555   Y,X,-Z                                                  
+REMARK 290       8555   -Y,-X,-Z                                                
+REMARK 290                                                                      
+REMARK 290     WHERE NNN -> OPERATOR NUMBER                                     
+REMARK 290           MMM -> TRANSLATION VECTOR                                  
+REMARK 290                                                                      
+REMARK 290 CRYSTALLOGRAPHIC SYMMETRY TRANSFORMATIONS                            
+REMARK 290 THE FOLLOWING TRANSFORMATIONS OPERATE ON THE ATOM/HETATM             
+REMARK 290 RECORDS IN THIS ENTRY TO PRODUCE CRYSTALLOGRAPHICALLY                
+REMARK 290 RELATED MOLECULES.                                                   
+REMARK 290   SMTRY1   1  1.000000  0.000000  0.000000        0.00000            
+REMARK 290   SMTRY2   1  0.000000  1.000000  0.000000        0.00000            
+REMARK 290   SMTRY3   1  0.000000  0.000000  1.000000        0.00000            
+REMARK 290   SMTRY1   2 -1.000000  0.000000  0.000000        0.00000            
+REMARK 290   SMTRY2   2  0.000000 -1.000000  0.000000        0.00000            
+REMARK 290   SMTRY3   2  0.000000  0.000000  1.000000        0.00000            
+REMARK 290   SMTRY1   3  0.000000 -1.000000  0.000000       81.69450            
+REMARK 290   SMTRY2   3  1.000000  0.000000  0.000000       81.69450            
+REMARK 290   SMTRY3   3  0.000000  0.000000  1.000000      126.44100            
+REMARK 290   SMTRY1   4  0.000000  1.000000  0.000000       81.69450            
+REMARK 290   SMTRY2   4 -1.000000  0.000000  0.000000       81.69450            
+REMARK 290   SMTRY3   4  0.000000  0.000000  1.000000      126.44100            
+REMARK 290   SMTRY1   5 -1.000000  0.000000  0.000000       81.69450            
+REMARK 290   SMTRY2   5  0.000000  1.000000  0.000000       81.69450            
+REMARK 290   SMTRY3   5  0.000000  0.000000 -1.000000      126.44100            
+REMARK 290   SMTRY1   6  1.000000  0.000000  0.000000       81.69450            
+REMARK 290   SMTRY2   6  0.000000 -1.000000  0.000000       81.69450            
+REMARK 290   SMTRY3   6  0.000000  0.000000 -1.000000      126.44100            
+REMARK 290   SMTRY1   7  0.000000  1.000000  0.000000        0.00000            
+REMARK 290   SMTRY2   7  1.000000  0.000000  0.000000        0.00000            
+REMARK 290   SMTRY3   7  0.000000  0.000000 -1.000000        0.00000            
+REMARK 290   SMTRY1   8  0.000000 -1.000000  0.000000        0.00000            
+REMARK 290   SMTRY2   8 -1.000000  0.000000  0.000000        0.00000            
+REMARK 290   SMTRY3   8  0.000000  0.000000 -1.000000        0.00000            
+REMARK 290                                                                      
+REMARK 290 REMARK: NULL                                                         
+CISPEP   1 ARG A   64    PRO A   65          0         5.00                     
+CISPEP   2 PRO A  145    PRO A  146          0        -4.72                     
+CISPEP   3 ARG B   64    PRO B   65          0         5.72                     
+CISPEP   4 PRO B  145    PRO B  146          0        -5.42                     
+CISPEP   5 ARG C   64    PRO C   65          0         5.75                     
+CISPEP   6 PRO C  145    PRO C  146          0        -5.08                     
+CISPEP   7 ARG D   64    PRO D   65          0         3.73                     
+CISPEP   8 PRO D  145    PRO D  146          0        -4.94                     
+CISPEP   9 ARG E   64    PRO E   65          0         5.89                     
+CISPEP  10 PRO E  145    PRO E  146          0        -5.83                     
+CRYST1  163.389  163.389  252.882  90.00  90.00  90.00 P 42 21 2                
+HETATM12307  C01 LIG E 502       4.490 -62.170 -35.681  1.00 76.14           C  
+HETATM12308  C02 LIG E 502       5.393 -63.051 -36.061  1.00 72.79           C  
+HETATM12309  C03 LIG E 502       4.996 -64.416 -36.392  1.00 70.52           C  
+HETATM12310  C04 LIG E 502       4.649 -65.429 -35.420  1.00 67.14           C  
+HETATM12311  C05 LIG E 502       4.254 -66.713 -35.865  1.00 66.20           C  
+HETATM12312  C06 LIG E 502       4.179 -67.044 -37.319  1.00 69.50           C  
+HETATM12313  C07 LIG E 502       4.554 -66.008 -38.385  1.00 72.72           C  
+HETATM12314  C08 LIG E 502       4.952 -64.714 -37.821  1.00 72.35           C  
+HETATM12315  O09 LIG E 502       4.546 -66.161 -39.941  1.00 75.47           O  
+HETATM12316  O10 LIG E 502       3.956 -67.607 -34.918  1.00 65.70           O  
+HETATM12317  C11 LIG E 502       4.815 -60.780 -35.318  1.00 79.73           C  
+HETATM12318  C12 LIG E 502       5.414 -59.916 -36.214  1.00 82.05           C  
+HETATM12319  C13 LIG E 502       5.763 -58.579 -35.899  1.00 84.12           C  
+HETATM12320  C14 LIG E 502       5.464 -58.077 -34.576  1.00 85.15           C  
+HETATM12321  C15 LIG E 502       4.835 -58.904 -33.615  1.00 84.20           C  
+HETATM12322  C16 LIG E 502       4.490 -60.305 -33.998  1.00 81.88           C  
+HETATM12323  O17 LIG E 502       5.823 -56.821 -34.335  1.00 86.09           O  
+END

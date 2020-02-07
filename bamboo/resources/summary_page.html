@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <title>{{ header }}</title>
+
+  </head>
+  <body>
+
+    <div class="container">
+      <h1>{{ title }}</h1>
+      <h2>{{ introduction }}</h2>
+      {% if progress_bar is defined %}
+      <div class="row">
+        {% for bar in progress_bar -%}
+        <div class="col-xs-12">
+          <p>{{ bar.title }}</p>
+          <div class="progress">
+            {% for seg in bar.data -%}
+            <div class="progress-bar progress-bar-striped progress-bar-{{ seg.colour }}" style="width: {{ seg.size }}%">
+              <span class="sr-only">{{ seg.text }}</span>
+              {{ seg.text ~ " (" ~ seg.size|int() ~ "%)" }}
+            </div>
+            {% endfor -%}
+          </div>
+        </div>
+        {% endfor -%}
+      </div>
+      {% endif %}
+      {% if summary_bar is defined %}
+      <div class="row">
+        {% for bar in summary_bar -%}
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><div class="alert alert-{{ bar.colour }}" role="alert">{{ bar.text }}</div></div>
+        {% endfor -%}
+      </div>
+      {% endif %}
+      {% if top_images is defined %}
+      <div class="row">
+        {% for img in top_images -%}
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+           <p>{{ img.title }}</p>
+           <img class="img-responsive" src="{{ img.path }}" alt="No Image">
+        </div>
+        {% endfor -%}
+      </div>
+      {% endif %}
+      {% if small_images is defined %}
+      <div class="row">
+        {% for img in small_images -%}
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+           <p>{{ img.title }}</p>
+           <img class="img-responsive" src="{{ img.path }}" alt="No Image">
+        </div>
+        {% endfor -%}
+      </div>
+      {% endif %}
+      {% if table is defined %}
+      <div class="table-responsive" style="height:600px">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <td></td>
+              {% for heading in table.column_headings -%}
+              <th class="text-nowrap">{{ heading }}</th>
+              {% endfor -%}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in table.rows -%}
+              {% if row.colour is defined %}<tr class={{ row.colour }}>{% else %}<tr>{% endif %}
+              <th class="text-nowrap" scope="row">{{ row.heading }}</th>
+              {% for col in row.columns -%}
+                <td class="text-nowrap {% if col.colour is defined -%}text-{{col.colour}}{% endif -%}"><span class="glyphicon {% if col.icon is defined -%}glyphicon-{{col.icon}}{% endif -%}" aria-hidden="true"></span> {{ col.message }}</td>
+              {% endfor -%}
+              {% if row.colour is defined %}<td><span class="label label-{{ row.colour }}">{{ row.message }}</span></td>{% endif -%}
+            </tr>
+            {% endfor -%}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+      <div class="alert alert-info" role="alert">Written by Nicholas M Pearce in 2015/2016.</div>
+    </div>
+
+  </body>
+</html>
+

@@ -238,6 +238,7 @@ class DatasetFileCopier:
         self.cif_to_pdb = cif_to_pdb
         self.processor = processor
         self.autobuild = autobuild
+        # TODO: make these settable from main
         self.ligand_cif_regex = "**/ligand.cif"
         self.ligand_pdb_regex = "**/ligand.pdb"
 
