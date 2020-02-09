@@ -29,6 +29,8 @@ ccp4-python /pandda/program/pandda_2_luigi.py data_dirs="/BAZ2B/data/*" pdb_styl
 
 1. Create a ccp4 install
 
-2. ```git clone https://github.com/ConorFWild/pandda.git; cd pandda; pip install .```
+2. ```git clone https://github.com/ConorFWild/pandda.git; cd pandda; ccp4-python pip install --upgrade .```
+
+3. biopandas is also needed. This requires python-dev. Try: ``` ccp4-python -m pip biopandas==0.2.4``` if that doesn't work: ```ccp4-python -m pip --no-cache-dir install --global-option=build_ext --global-option="-I/usr/include/python2.7 -lpython2.7" biopandas==0.2.4```
 
 
