@@ -5,4 +5,4 @@ configparser
 constants
 dask
 cloudpickle
-# biopandas==0.2.4
+biopandas==0.2.4
