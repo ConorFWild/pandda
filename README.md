@@ -1,13 +1,36 @@
-Setup instructions
+## Running/testing in Docker container
+1. Clone this repository
+```
+git clone <repository>
+```
 
-Create a ccp4 install
+2. Build the docker container (from the cloned repo directory)
+```
+docker build -t pandda-2 .
+```
 
-ccp4-python -m pip install joblib
+3. Run the docker container interactivley
+```
+docker run -it pandda-2 /bin/bash
+```
 
-ccp4-python -m pip install luigi
+4. Now inside the container, setup ccp4 env
+```
+source /ccp4/bin/ccp4.setup-sh
+```
 
-git clone https://github.com/ConorFWild/mdc.git; cd mdc; pip install .
+5. Test that pandda-2 is set up correctly by using the BAZ2B data
+```
+ccp4-python /pandda/program/pandda_2_luigi.py data_dirs="/BAZ2B/data/*" pdb_style="*.dimple.pdb" mtz_style="*.dimple.mtz" cpus=8 out_dir="/BAZ2B_out" diffraction_data.structure_factors="2FOFCWT,PH2FOFCWT"
+```
 
-git clone https://github.com/ConorFWild/pandda.git; cd pandda; pip install .
+
+## Setup instructions - from source 
+
+1. Create a ccp4 install
+
+2. ```git clone https://github.com/ConorFWild/pandda.git; cd pandda; ccp4-python pip install --upgrade .```
+
+3. biopandas is also needed. This requires python-dev. Try: ``` ccp4-python -m pip biopandas==0.2.4``` if that doesn't work: ```ccp4-python -m pip --no-cache-dir install --global-option=build_ext --global-option="-I/usr/include/python2.7 -lpython2.7" biopandas==0.2.4```
 
 
