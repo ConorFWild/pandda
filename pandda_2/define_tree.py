@@ -27,7 +27,7 @@ class DefineTree:
                  dataset,
                  shells,
                  ):
-        tree = Dir(name="pandda_test",
+        tree = Dir(name="{}".format(p.Path(self.output_dir).name),
                    root=self.output_dir,
                    children={"processed_datasets": Dir(name="processed_datasets",
                                                        children={dtag: Dir(name=dtag,
