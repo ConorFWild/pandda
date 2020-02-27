@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pandda-2
-Version: 0.0.1
+Version: 0.0.2
 Summary: A package for handling many crystalographic datasets simultainiously
 Home-page: https://github.com/pypa/sampleproject
 Author: Conor Francis Wild

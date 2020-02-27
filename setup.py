@@ -10,7 +10,7 @@ def requirements():
 
 setuptools.setup(
     name="pandda_2",
-    version="0.0.1",
+    version="0.0.2",
     author="Conor Francis Wild",
     author_email="conor.wild@sky.com",
     description="A package for handling many crystalographic datasets simultainiously",

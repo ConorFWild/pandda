@@ -61,7 +61,7 @@ class Task(SGEJobTask):
         return luigi.LocalTarget(str(self.output_path))
 
 
-class ProcessorLuigi():
+class ProcessorLuigi:
 
     def __init__(self,
                  jobs=10,
@@ -83,8 +83,8 @@ class ProcessorLuigi():
         tasks = [Task(func=func,
                       output_path=output_path,
                       shared_tmp_dir="/dls/science/groups/i04-1/conor_dev/pandda/lib-python/pandda/pandda_analyse_dask/luigi_test",
-                      parallel_env="smp",
-                      n_cpu=24,
+                      parallel_env=self.parallel_env,
+                      n_cpu=self.n_cpu,
                       run_locally=False,
                       )
                  for func, output_path

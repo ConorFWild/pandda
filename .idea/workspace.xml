@@ -11,7 +11,7 @@
       <change beforePath="$PROJECT_DIR$/pandda_2/options.py" beforeDir="false" afterPath="$PROJECT_DIR$/pandda_2/options.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pandda_2/process_shell.py" beforeDir="false" afterPath="$PROJECT_DIR$/pandda_2/process_shell.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pandda_2/processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/pandda_2/processor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/program/pandda_2_luigi.py" beforeDir="false" afterPath="$PROJECT_DIR$/program/pandda_2_luigi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/program/pandda_2_luigi.py" beforeDir="false" afterPath="$PROJECT_DIR$/program/pandda_2.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -46,7 +46,7 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/program/pandda_2_luigi.py">
+        <entry file="file://$PROJECT_DIR$/program/pandda_2.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="225">
               <caret line="81" column="50" selection-start-line="81" selection-start-column="50" selection-end-line="81" selection-end-column="50" />
@@ -81,23 +81,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pandda_2/options.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3870">
-              <caret line="285" column="17" selection-start-line="285" selection-start-column="8" selection-end-line="285" selection-end-column="17" />
-              <folding>
-                <element signature="e#0#28#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-3760">
+              <caret line="43" column="37" lean-forward="true" selection-start-line="43" selection-start-column="37" selection-end-line="43" selection-end-column="37" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pandda_2/make_event_map.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="347">
-              <caret line="53" column="50" selection-start-line="53" selection-start-column="50" selection-end-line="53" selection-end-column="50" />
+            <state relative-caret-position="242">
+              <caret line="46" column="47" lean-forward="true" selection-start-line="46" selection-start-column="47" selection-end-line="46" selection-end-column="47" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -144,8 +141,8 @@
       <find>Electr</find>
       <find>dict_to</find>
       <find>log</find>
-      <find>PanddaNa</find>
       <find>make_even</find>
+      <find>PanddaNa</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -308,13 +305,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="27" width="1536" height="814" extended-state="7" />
+    <frame x="0" y="27" width="1536" height="814" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.19312169" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.19312169" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="0" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="0" visible="true" weight="0.32986626" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="2" />
       <window_info anchor="bottom" id="Message" order="3" />
@@ -684,7 +681,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/program/pandda_2_luigi.py">
+    <entry file="file://$PROJECT_DIR$/program/pandda_2.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="81" column="50" selection-start-line="81" selection-start-column="50" selection-end-line="81" selection-end-column="50" />
@@ -694,23 +691,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pandda_2/options.py">
+    <entry file="file://$PROJECT_DIR$/pandda_2/make_event_map.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3870">
-          <caret line="285" column="17" selection-start-line="285" selection-start-column="8" selection-end-line="285" selection-end-column="17" />
+        <state relative-caret-position="242">
+          <caret line="46" column="47" lean-forward="true" selection-start-line="46" selection-start-column="47" selection-end-line="46" selection-end-column="47" />
           <folding>
-            <element signature="e#0#28#0" expanded="true" />
+            <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pandda_2/make_event_map.py">
+    <entry file="file://$PROJECT_DIR$/pandda_2/options.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="53" column="50" selection-start-line="53" selection-start-column="50" selection-end-line="53" selection-end-column="50" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-3760">
+          <caret line="43" column="37" lean-forward="true" selection-start-line="43" selection-start-column="37" selection-end-line="43" selection-end-column="37" />
         </state>
       </provider>
     </entry>

@@ -179,7 +179,6 @@ class GridPartition(object):
         if mask: query_sites = flex.vec3_double(mask.outer_mask())
         else:    query_sites = flex.vec3_double(self.parent.grid_points())
         # Find the nearest grid_site for each query_site (returns index of the grid site)
-        print("STARTING MULTIPROCESSING")
         if cpus == 1:
             output = [find_sites((self.sites_grid, query_sites))]
         else:

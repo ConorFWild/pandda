@@ -238,6 +238,7 @@ pandda_2/options.py
 pandda_2/output.py
 pandda_2/output_event_table.py
 pandda_2/output_sites_table.py
+pandda_2/pandda_logging.py
 pandda_2/pandda_phil.py
 pandda_2/path.py
 pandda_2/process_shell.py

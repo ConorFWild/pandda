@@ -307,11 +307,12 @@ class Options:
                                                         process=process_in_shell,
                                                         )
 
-        self.processer = processor.ProcessorLuigi(jobs=10,
-                                                  parallel_env="smp",
-                                                  n_cpu=12,
-                                                  run_locally=False,
-                                                  )
+        # self.processer = processor.ProcessorLuigi(jobs=10,
+        #                                           parallel_env="smp",
+        #                                           n_cpu=12,
+        #                                           run_locally=False,
+        #                                           )
+        self.processer = processor.Processor()
 
         # Get site table creator
         self.create_sites_table = create_sites_table.CreateSitesTable()
