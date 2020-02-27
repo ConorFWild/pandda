@@ -1,0 +1,1 @@
+/dls/science/groups/i04-1/conor_dev/ccp4/build/bin/cctbx.python /dls/science/groups/i04-1/conor_dev/pandda_2/program/pandda_2_luigi.py data_dirs="/dls/labxchem/data/2018/lb18145-71/processing/analysis/initial_model/*" pdb_style="dimple.pdb" mtz_style="dimple.mtz" cpus=21 out_dir=/dls/labxchem/data/2018/lb18145-71/processing/analysis/panddas.2.conor 

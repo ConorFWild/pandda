@@ -2,6 +2,8 @@ from collections import OrderedDict
 
 import pandas as pd
 
+from pandda_2 import pandda_logging
+
 
 class ProcessShell:
     def __init__(self,
@@ -232,6 +234,20 @@ class ProcessShell:
 
             for event_id, events_analysis_computed in events_analysed_computed[dtag].items():
                 # print("Print making event maps args")
+                pandda_logging.log_map_making(xmaps[dtag],
+                                              shell_ref_map,
+                                              events_analysed_computed[dtag][event_id]["estimated_bdc"],
+                                              )
+
+                map_bdc = events_analysed_computed[dtag][event_id]["estimated_bdc"]
+                fractional_mean_map = shell_ref_map.new_from_template(map_data=shell_ref_map.data * map_bdc,
+                                                                      sparse=shell_ref_map.is_sparse(),
+                                                                      )
+
+                event_map = xmaps[dtag] - fractional_mean_map
+
+                print(pandda_logging.log_summarise_map(event_map))
+
                 event_map_funcs[(dtag, event_id)] = TaskWrapper(self.make_event_map,
                                                                 xmaps[dtag],
                                                                 truncated_datasets[dtag],

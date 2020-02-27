@@ -50,7 +50,8 @@ class PanddaNativeEventMapMaker:
         # ============================================================================>
         # Make Event-map
         # ============================================================================>
-        ref_event_map = (sample - ref_map * bdc)
+
+        ref_event_map = (sample - (ref_map * bdc))
         map_maker = NativeMapMaker(dataset=dataset,
                                    map_obj=ref_event_map,
                                    sites_mask=self.grid.global_mask().sites_cart,

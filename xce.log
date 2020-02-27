@@ -1,0 +1,37 @@
+2020-02-25 19:57:49.33 ==> XCE: 
+
+     #######################################################################
+     #                                                                     #
+     # XCHEMEXPLORER - multi dataset analysis                              #
+     #                                                                     #
+     # Version: v1.5.2                                                     #
+     #                                                                     #
+     # Date: 25/02/2020                                                    #
+     #                                                                     #
+     # Authors: Tobias Krojer, Structural Genomics Consortium, Oxford, UK  #
+     #          tobias.krojer@sgc.ox.ac.uk                                 #
+     #                                                                     #
+     #          Rachael Skyner, Diamond Light Source, UK                   #
+     #          rachael.skyner@diamond.ac.uk                               #
+     #                                                                     #
+     #######################################################################
+
+creating new logfile for the current XChemExplorer (v1.5.2) session:
+/dls/science/groups/i04-1/conor_dev/pandda_2/xce.log
+
+2020-02-25 19:57:49.33 ==> XCE: Searching for external software...
+2020-02-25 19:57:50.59 ==> XCE: checking for qsub:                                 found     
+2020-02-25 19:57:50.59 ==> XCE: checking for array qsub:                           found     
+2020-02-25 19:57:50.77 ==> XCE: checking for refmac5:                              found     
+2020-02-25 19:58:23.04 ==> XCE: checking for phenix.molprobity:                    found     
+2020-02-25 19:58:35.72 ==> XCE: checking for phenix.find_tls_groups:               found     
+2020-02-25 19:58:51.52 ==> XCE: checking for mmtbx.validate_ligands:               found     
+2020-02-25 19:59:03.25 ==> XCE: checking for acedrg:                               found     
+2020-02-25 19:59:16.74 ==> XCE: checking for phenix.elbow:                         found     
+2020-02-25 19:59:18.15 ==> XCE: checking for grade:                                found     
+2020-02-25 19:59:18.62 ==> XCE: checking for giant.create_occupancy_params:        not found 
+2020-02-25 19:57:49.33 ==> XCE: new session started
+2020-02-25 19:59:18.63 ==> XCE: will use acedrg for generation of ligand coordinates and restraints
+2020-02-25 19:59:18.63 ==> XCE: will use phenix.elbow for generation of ligand coordinates and restraints
+2020-02-25 19:59:18.63 ==> XCE: will use grade for generation of ligand coordinates and restraints
+2020-02-25 19:59:19.28 ==> XCE: reference file 0: ['...', '', '', '', 0, '0']
