@@ -61,16 +61,16 @@ def get_config(args):
 
 
 class Output:
-    def __init__(self, out_dir_path: Path):
-        self.merged_pandda_path: Path = out_dir_path
+    def __init__(self, out_dir_path):
+        self.merged_pandda_path = out_dir_path
 
-    def attempt_mkdir(self, path: Path):
+    def attempt_mkdir(self, path):
         try:
             os.mkdir(str(path))
         except Exception as e:
             print(e)
 
-    def attempt_remove(self, path: Path):
+    def attempt_remove(self, path):
         try:
             shutil.rmtree(path,
                           ignore_errors=True,
@@ -87,7 +87,7 @@ class Output:
         self.attempt_mkdir(self.merged_pandda_path)
 
 
-def setup_output_directory(path: Path, overwrite=False):
+def setup_output_directory(path, overwrite=False):
     output: Output = Output(path)
     output.make(overwrite)
     return output
