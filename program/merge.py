@@ -519,9 +519,10 @@ def main():
     output = setup_output_directory(config.merged_pandda_path)
 
     print("Copying old pandda directory...")
-    copy_directory(config.old_pandda_path,
-                   output.merged_pandda_path,
-                   )
+    if not output.merged_pandda_path.exists():
+        copy_directory(config.old_pandda_path,
+                       output.merged_pandda_path,
+                       )
     print("\tCoptied old pandda directory!")
 
     print("Getting old pandda events...")
