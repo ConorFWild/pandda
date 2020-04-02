@@ -88,7 +88,7 @@ class Output:
 
 
 def setup_output_directory(path, overwrite=False):
-    output: Output = Output(path)
+    output = Output(path)
     output.make(overwrite)
     return output
 
