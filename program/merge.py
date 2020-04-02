@@ -472,6 +472,7 @@ def sync_event_dirs(final_events,
                            event_dir_path,
                            )
             sync_records[(event.dtag, event.event_idx)] = "New dataset only analysed in new pandda"
+            continue
 
         event_map_path = event_dir_path / pandda_event_map_pattern.format(dtag=event.dtag,
                                                                           event_idx=event.event_idx,
