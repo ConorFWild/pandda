@@ -53,7 +53,7 @@ def get_config(args):
     config = Config(old_pandda_path=Path(args.old_pandda_path),
                     new_pandda_path=Path(args.new_pandda_path),
                     merged_pandda_path=Path(args.merged_pandda_path),
-                    only_built=Path(args.only_built),
+                    only_built=args.only_built,
                     )
 
     return config
