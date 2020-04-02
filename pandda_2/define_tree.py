@@ -28,7 +28,7 @@ class DefineTree:
                  shells,
                  ):
         tree = Dir(name="{}".format(p.Path(self.output_dir).name),
-                   root=self.output_dir,
+                   root=p.Path(self.output_dir).parent,
                    children={"processed_datasets": Dir(name="processed_datasets",
                                                        children={dtag: Dir(name=dtag,
                                                                            children={"z_map": File(name="{}-z_map.ccp4".format(dtag)),
@@ -66,6 +66,10 @@ class DefineTree:
                              "analyses": Dir(name="analyses",
                                              children={"pandda_analyse_events": File(name="pandda_analyse_events.csv"),
                                                        "pandda_analyse_sites": File(name="pandda_analyse_sites.csv"),
+                                                       "html_summaries": Dir(name="html_summaries",
+                                                                             children={"dummy": File(name="dummy"),
+                                                                                       }
+                                                                             ),
                                                        },
                                              ),
                              "ligand_files": Dir(name="ligand_files",

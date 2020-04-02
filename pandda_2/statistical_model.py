@@ -480,7 +480,10 @@ class PanDDANormalModel:
     def fit(self,
             samples_train,
             samples_test,
+            processor=None,
             ):
+
+        print("statistical model processor: {}".format(processor))
 
         samples_train = {sample.meta.tag: sample for sample in samples_train}
         samples_test = {sample.meta.tag: sample for sample in samples_test}
@@ -497,12 +500,16 @@ class PanDDANormalModel:
 
         self.mu = self.fit_mu(characterisation_maps, map_data_size)
 
-        self.sigma_uncertainty = self.fit_sigma_uncertainty(analysis_maps, map_data_size, cpus=self.cpus)
+        self.sigma_uncertainty = self.fit_sigma_uncertainty(analysis_maps,
+                                                            map_data_size,
+                                                            cpus=self.cpus,
+                                                            processor=processor)
 
         self.sigma_adjusted = self.fit_sigma_adjusted(analysis_maps,
                                                       self.sigma_uncertainty,
                                                       map_data_size,
                                                       cpus=self.cpus,
+                                                      processor=processor,
                                                       )
 
         return self
@@ -555,7 +562,8 @@ class PanDDANormalModel:
 
         return mu
 
-    def fit_sigma_uncertainty(self, analysis_maps, map_data_size, masked_idxs=None, mask_name=None, q_cut=1.5, cpus=1):
+    def fit_sigma_uncertainty(self, analysis_maps, map_data_size, masked_idxs=None, mask_name=None, q_cut=1.5, cpus=1,
+                              processor=None):
         """Calculate the uncertainty in each of the different maps"""
 
         print("\t### Fitting sigma_uncertainty!")
@@ -638,12 +646,22 @@ class PanDDANormalModel:
         # #                                     verbose=5)(jl.delayed(wrapper_run)(arg)
         # #                                                 for arg
         # #                                                 in arg_list)
-        map_uncertainties = jl.Parallel(n_jobs=self.cpus,
-                                        verbose=5,
-                                        )(jl.delayed(wrapper_run)(arg)
-                                          for arg
-                                          in arg_list
-                                          )
+
+        if processor == None:
+            print("No processor found!")
+            map_uncertainties = jl.Parallel(n_jobs=self.cpus,
+                                            verbose=5,
+                                            )(jl.delayed(wrapper_run)(arg)
+                                              for arg
+                                              in arg_list
+                                              )
+
+        else:
+            print("Using processor!")
+            map_uncertainties = processor([jl.delayed(wrapper_run)(arg)
+                                              for arg
+                                              in arg_list]
+                                              )
 
         # print('|')
 
@@ -663,7 +681,7 @@ class PanDDANormalModel:
         # return [m.meta.map_uncertainty for m in self.dataset_maps.mask(mask_name=mask_name)]
         return {m.meta.tag: m.meta.map_uncertainty for m in analysis_maps}
 
-    def fit_sigma_adjusted(self, analysis_maps, uncertainties, map_data_size, cpus=1):
+    def fit_sigma_adjusted(self, analysis_maps, uncertainties, map_data_size, cpus=1, processor=None):
 
         print("\t### Fitting sigma_adjusted!")
 
@@ -675,12 +693,13 @@ class PanDDANormalModel:
                                         uncertainties_ordered,
                                         map_data_size,
                                         cpus=self.cpus,
+                                        processor=processor,
                                         )
 
         return self.statistical_maps.sadj_map
 
     def calculate_statistical_maps(self, dataset_maps, uncertainties, map_data_size, mask_name=None,
-                                   ignore_warnings=True, cpus=1):
+                                   ignore_warnings=True, cpus=1, processor=None):
         """Take the sampled maps and calculate statistics for each grid point across the datasets"""
 
         # Extract the maps to be used for averaging
@@ -753,12 +772,22 @@ class PanDDANormalModel:
 
                 chunk_list.append(arg_list)
 
-                processed_chunk = jl.Parallel(n_jobs=self.cpus,
-                                              verbose=5,
-                                              )(jl.delayed(wrapper_run)(arg)
-                                                for arg
-                                                in arg_list
-                                                )
+                if processor == None:
+                    print("No processor found!")
+                    processed_chunk = jl.Parallel(n_jobs=self.cpus,
+                                                  verbose=5,
+                                                  )(jl.delayed(wrapper_run)(arg)
+                                                    for arg
+                                                    in arg_list
+                                                    )
+
+                else:
+                    print("Using processor!")
+
+                    processed_chunk = processor([jl.delayed(wrapper_run)(arg)
+                                                    for arg
+                                                    in arg_list]
+                                                    )
 
                 tmp_point_statistics.append(processed_chunk)
 

@@ -152,16 +152,24 @@ def _parse_qsub_job_id(qsub_out):
     return int(job_id)
 
 
-def _build_qsub_command(cmd, job_name, outfile, errfile, pe, n_cpu):
+def _build_qsub_command(cmd, job_name, outfile, errfile, pe, n_cpu=3, h_vmem=100, m_mem_free=5):
     """Submit shell command to SGE queue via `qsub`"""
     # qsub_template = """echo {cmd} | qsub -o ":{outfile}" -e ":{errfile}" -V -r y -pe {pe} {n_cpu} -N {job_name}"""
     # return qsub_template.format(
     #     cmd=cmd, job_name=job_name, outfile=outfile, errfile=errfile,
     #     pe=pe, n_cpu=n_cpu)
 
-    qsub_template = """echo {cmd} | qsub -pe smp 8 -P labxchem -q medium.q -o ":{outfile}" -e ":{errfile}" -N {job_name} -l h_vmem=64G,redhat_release=rhel7"""
+    qsub_template = """echo {cmd} | qsub -pe smp {n_cpu} -P labxchem -q medium.q -o ":{outfile}" -e ":{errfile}" -N {job_name} -l h_vmem={h_vmem}G,redhat_release=rhel7,m_mem_free={m_mem_free}G"""
 
-    qsub_command = qsub_template.format(cmd=cmd, job_name=job_name, outfile=outfile, errfile=errfile)
+
+    qsub_command = qsub_template.format(cmd=cmd,
+                                        job_name=job_name,
+                                        outfile=outfile,
+                                        errfile=errfile,
+                                        n_cpu=n_cpu,
+                                        h_vmem=h_vmem,
+                                        m_mem_free=m_mem_free,
+                                        )
 
     return qsub_command
 
@@ -217,6 +225,11 @@ class SGEJobTask(luigi.Task):
     no_tarball = luigi.BoolParameter(
         significant=False,
         description="don't tarball (and extract) the luigi project files")
+
+    # Custom params
+    h_vmem = luigi.IntParameter(default=100)
+    m_mem_free = luigi.IntParameter(default=5)
+
 
     def __init__(self, *args, **kwargs):
         super(SGEJobTask, self).__init__(*args, **kwargs)
@@ -320,8 +333,16 @@ class SGEJobTask(luigi.Task):
         # Build qsub submit command
         self.outfile = os.path.join(self.tmp_dir, 'job.out')
         self.errfile = os.path.join(self.tmp_dir, 'job.err')
-        submit_cmd = _build_qsub_command(job_str, self.task_family, self.outfile,
-                                         self.errfile, self.parallel_env, self.n_cpu)
+        submit_cmd = _build_qsub_command(job_str,
+                                         self.task_family,
+                                         self.outfile,
+                                         self.errfile,
+                                         self.parallel_env,
+                                         n_cpu=self.n_cpu,
+                                         h_vmem=self.h_vmem,
+                                         m_mem_free=self.m_mem_free,
+                                         )
+
         logger.debug('qsub command: \n' + submit_cmd)
 
         # Submit the job and grab job ID

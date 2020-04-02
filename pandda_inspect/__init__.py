@@ -2,6 +2,9 @@ import os, sys, glob, copy, time, itertools
 import gtk
 import pandas
 
+import sys 
+print(sys.executable)
+
 from bamboo.plot import bar
 
 from pandda_inspect import html as inspect_html

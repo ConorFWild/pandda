@@ -26,6 +26,10 @@ pandda
                 .type = str
             mtz_regex = None
                 .type = str
+            ligand_cif_regex = None
+                .type = str
+            ligand_pdb_regex = None
+                .type = str
         }
         filter
             .help = "Provide a dataset to filter input datasets against"
@@ -387,6 +391,22 @@ pandda
         backend = seriel parallel_multiprocess parallel_joblib parallel_dask *distributed_dask
             .help = "What backend to use for PanDDA math"
             .type = choice
+        process_dict = *joblib seriel
+            .help = "How to process dicts"
+            .type = choice
+        process_dict_n_cpus = 12
+            .help = "How to process dicts"
+            .type = int
+        process_shells = *luigi seriel
+            .help = "How to process shells"
+            .type = choice
+        h_vmem = 100
+            .help = "How to process dicts"
+            .type = int
+        m_mem_free = 5
+            .help = "How to process dicts"
+            .type = int
+        
     }
 
     results

@@ -64,227 +64,257 @@ class ProcessShell:
         self.tree = tree
         self.shell_num = shell_num
 
-        try:
-            print("Checking for event table at: {}".format(tree["shells"][self.shell_num]["event_table"]()))
-            event_table = pd.read_csv(tree["shells"][self.shell_num]["event_table"]())
-            return event_table
-        except:
-            print("Shell {} not yet processed!".format(self.shell_num))
+        with self.process as processor:
 
-        # ###############################################
-        # Get resolution
-        # ###############################################
-        resolutions_test = max([dts.data.summary.high_res
-                                for dtag, dts
-                                in self.shell_dataset.partition_datasets("test").items()
-                                ]
-                               )
-        resolutions_train = max([dts.data.summary.high_res
-                                 for dtag, dts
-                                 in self.shell_dataset.partition_datasets("train").items()
-                                 ]
-                                )
-        max_res = max(resolutions_test,
-                      resolutions_train,
-                      )
 
-        # ###############################################
-        # Instantiate sheel variable names
-        # ###############################################
-        dtags = set(self.shell_dataset.partition_datasets("test").keys()
-                    + self.shell_dataset.partition_datasets("train").keys()
-                    )
+            try:
+                print("Checking for event table at: {}".format(tree["shells"][self.shell_num]["event_table"]()))
+                event_table = pd.read_csv(tree["shells"][self.shell_num]["event_table"]())
+                return event_table
+            except:
+                print("Shell {} not yet processed!".format(self.shell_num))
 
-        train_dtags = [dtag
-                       for dtag
-                       in dtags
-                       if (dtag in self.shell_dataset.partition_datasets("train").keys())
-                       ]
-        test_dtags = [dtag
-                      for dtag
-                      in dtags
-                      if (dtag in self.shell_dataset.partition_datasets("test").keys())
-                      ]
-        # print("\tNumber of train dtags: {}".format(len(train_dtags)))
-        # print("\tNumber of test dtags: {}".format(len(test_dtags)))
-
-        # ###############################################
-        # Truncate datasets
-        # ###############################################
-        print("Truncaitng Diffractions")
-        truncated_reference, truncated_datasets = self.diffraction_data_truncator(self.shell_dataset.datasets,
-                                                                                  self.reference,
-                                                                                  )
-
-        shell_max_res = max_res
-
-        # ###############################################
-        # Generate maps
-        # ###############################################
-        print("Getting Shell refeence map")
-        shell_ref_map = self.get_reference_map(self.reference_map_getter,
-                                               self.reference,
-                                               shell_max_res,
-                                               self.grid,
-                                               )
-
-        print("Getting XMaps")
-        xmap_funcs = {}
-        for dtag in truncated_datasets.keys():
-            task = TaskWrapper(self.map_loader,
-                               truncated_datasets[dtag],
-                               self.grid,
-                               shell_ref_map,
-                               shell_max_res,
-                               )
-            xmap_funcs[dtag] = task
-
-        # print("\tNum xmap funcs: {}".format(len(xmap_funcs)))
-        # print("\tNumber of truncated datasets is: {}".format(len(truncated_datasets)))
-        # print("\tNum of keys in xmaps_funcs is:{}".format(xmap_funcs.keys()))
-        xmaps = self.process(xmap_funcs)
-
-        # ###############################################
-        # Fit statistical model to trianing sets
-        # ###############################################
-        print("Fitting model")
-        # print("\tNumber of xmaps: {}".format(len(xmaps)))
-
-        shell_fit_model = self.fit(self.statistical_model,
-                                   [xmaps[dtag] for dtag in train_dtags],
-                                   [xmaps[dtag] for dtag in test_dtags],
+            # ###############################################
+            # Get resolution
+            # ###############################################
+            resolutions_test = max([dts.data.summary.high_res
+                                    for dtag, dts
+                                    in self.shell_dataset.partition_datasets("test").items()
+                                    ]
                                    )
+            resolutions_train = max([dts.data.summary.high_res
+                                     for dtag, dts
+                                     in self.shell_dataset.partition_datasets("train").items()
+                                     ]
+                                    )
+            max_res = max(resolutions_test,
+                          resolutions_train,
+                          )
 
-        shell_fit_model_scattered = shell_fit_model
+            # ###############################################
+            # Instantiate sheel variable names
+            # ###############################################
+            dtags = set(self.shell_dataset.partition_datasets("test").keys()
+                        + self.shell_dataset.partition_datasets("train").keys()
+                        )
 
-        # ###############################################
-        # Find events
-        # ###############################################
-        print("Evaluating model")
-        zmap_funcs = {}
-        for dtag in test_dtags:
-            task = TaskWrapper(self.evaluate_model,
-                               shell_fit_model_scattered,
-                               xmaps[dtag],
-                               )
-            zmap_funcs[dtag] = task
-        zmaps = self.process(zmap_funcs)
+            train_dtags = [dtag
+                           for dtag
+                           in dtags
+                           if (dtag in self.shell_dataset.partition_datasets("train").keys())
+                           ]
+            test_dtags = [dtag
+                          for dtag
+                          in dtags
+                          if (dtag in self.shell_dataset.partition_datasets("test").keys())
+                          ]
+            # print("\tNumber of train dtags: {}".format(len(train_dtags)))
+            # print("\tNumber of test dtags: {}".format(len(test_dtags)))
 
-        print("Getting clusters")
-        clusters_funcs = {}
-        for dtag in test_dtags:
-            task = TaskWrapper(self.cluster_outliers,
-                               truncated_datasets[dtag],
-                               zmaps[dtag],
-                               self.grid,
-                               )
-            clusters_funcs[dtag] = task
-        clusters = self.process(clusters_funcs)
+            # ###############################################
+            # Truncate datasets
+            # ###############################################
+            print("Truncaitng Diffractions")
+            truncated_reference, truncated_datasets = self.diffraction_data_truncator(self.shell_dataset.datasets,
+                                                                                      self.reference,
+                                                                                      )
 
-        print("Getting events")
-        filter_funcs = {}
-        for dtag in test_dtags:
-            task = TaskWrapper(self.filter_clusters,
-                               truncated_datasets[dtag],
-                               clusters[dtag],
-                               self.grid,
-                               )
-            filter_funcs[dtag] = task
-        events = self.process(filter_funcs)
+            shell_max_res = max_res
 
-        print("Analysign events")
-        analyse_funcs = {}
-        for dtag in test_dtags:
-            task = TaskWrapper(self.event_analyser,
-                               truncated_datasets[dtag],
-                               xmaps[dtag],
-                               shell_ref_map,
-                               events[dtag],
-                               self.grid,
-                               )
-            analyse_funcs[dtag] = task
-        events_analysed = self.process(analyse_funcs)
+            # ###############################################
+            # Generate maps
+            # ###############################################
+            print("Getting Shell refeence map")
+            shell_ref_map = self.get_reference_map(self.reference_map_getter,
+                                                   self.reference,
+                                                   shell_max_res,
+                                                   self.grid,
+                                                   )
 
-        events_analysed_computed = events_analysed
+            print("Getting XMaps")
+            xmap_funcs = {}
+            for dtag in truncated_datasets.keys():
+                task = TaskWrapper(self.map_loader,
+                                   truncated_datasets[dtag],
+                                   self.grid,
+                                   shell_ref_map,
+                                   shell_max_res,
+                                   )
+                xmap_funcs[dtag] = task
 
-        events_computed = events
+            # print("\tNum xmap funcs: {}".format(len(xmap_funcs)))
+            # print("\tNumber of truncated datasets is: {}".format(len(truncated_datasets)))
+            # print("\tNum of keys in xmaps_funcs is:{}".format(xmap_funcs.keys()))
+            # xmaps = self.process(xmap_funcs)
+            print(processor)
+            print(processor.parallel)
 
-        # Criticise each indidual dataset (generate statistics, event map and event table)
-        z_maps_ccp4 = OrderedDict()
+            xmaps = processor(xmap_funcs)
+            print(xmaps)
+            print(xmaps.values()[0])
+            print(type(xmaps.values()[0]))
 
-        event_map_args = OrderedDict()
-        z_map_args = OrderedDict()
-        event_maps = OrderedDict()
 
-        z_map_funcs = OrderedDict()
-        event_map_funcs = OrderedDict()
+            # ###############################################
+            # Fit statistical model to trianing sets
+            # ###############################################
+            print("Fitting model")
+            # print("\tNumber of xmaps: {}".format(len(xmaps)))
 
-        for dtag in test_dtags:
-            event_maps[dtag] = OrderedDict()
+            shell_fit_model = self.fit(self.statistical_model,
+                                       [xmaps[dtag] for dtag in train_dtags],
+                                       [xmaps[dtag] for dtag in test_dtags],
+                                       processor=processor,
+                                       )
 
-            if len(events_computed[dtag][2]) != 0:
-                # print("Making z map args")
-                z_map_funcs[dtag] = TaskWrapper(self.make_z_map,
-                                                xmaps[dtag],
-                                                truncated_datasets[dtag],
-                                                self.tree["processed_datasets"][dtag]["z_map"](),
-                                                shell_fit_model_scattered,
-                                                self.grid,
-                                                )
+            shell_fit_model_scattered = shell_fit_model
 
-            for event_id, events_analysis_computed in events_analysed_computed[dtag].items():
-                # print("Print making event maps args")
-                pandda_logging.log_map_making(xmaps[dtag],
-                                              shell_ref_map,
-                                              events_analysed_computed[dtag][event_id]["estimated_bdc"],
-                                              )
+            # ###############################################
+            # Find events
+            # ###############################################
 
-                map_bdc = events_analysed_computed[dtag][event_id]["estimated_bdc"]
-                fractional_mean_map = shell_ref_map.new_from_template(map_data=shell_ref_map.data * map_bdc,
-                                                                      sparse=shell_ref_map.is_sparse(),
-                                                                      )
+            xmaps = processor(xmap_funcs)
+            print(xmaps)
+            print(xmaps.values()[0])
+            print(type(xmaps.values()[0]))
+            print(processor)
+            print(processor.parallel)
 
-                event_map = xmaps[dtag] - fractional_mean_map
+            print("Evaluating model")
+            zmap_funcs = {}
+            for dtag in test_dtags:
+                task = TaskWrapper(self.evaluate_model,
+                                   shell_fit_model_scattered,
+                                   xmaps[dtag],
+                                   )
+                zmap_funcs[dtag] = task
+            # zmaps = self.process(zmap_funcs)
+            print(processor)
+            print("processor: {}".format(processor.parallel))
+            zmaps = processor(zmap_funcs)
 
-                print(pandda_logging.log_summarise_map(event_map))
+            print("Getting clusters")
+            clusters_funcs = {}
+            for dtag in test_dtags:
+                task = TaskWrapper(self.cluster_outliers,
+                                   truncated_datasets[dtag],
+                                   zmaps[dtag],
+                                   self.grid,
+                                   )
+                clusters_funcs[dtag] = task
+            # clusters = self.process(clusters_funcs)
+            clusters = processor(clusters_funcs)
 
-                event_map_funcs[(dtag, event_id)] = TaskWrapper(self.make_event_map,
-                                                                xmaps[dtag],
-                                                                truncated_datasets[dtag],
-                                                                shell_ref_map,
-                                                                events_computed[dtag][2][
-                                                                    int(event_id[1]) - 1],
-                                                                events_analysed_computed[dtag][
-                                                                    event_id]["estimated_bdc"],
-                                                                self.tree["processed_datasets"][dtag]["event_map"]([dtag,
-                                                                                 event_id[1],
-                                                                                 round(1-events_analysed_computed[dtag][event_id]["estimated_bdc"], 2),
-                                                                                                                    ]
-                                                                                 ),
-                                                                self.grid,
-                                                                )
+            print("Getting events")
+            filter_funcs = {}
+            for dtag in test_dtags:
+                task = TaskWrapper(self.filter_clusters,
+                                   truncated_datasets[dtag],
+                                   clusters[dtag],
+                                   self.grid,
+                                   )
+                filter_funcs[dtag] = task
+            # events = self.process(filter_funcs)
+            events = processor(filter_funcs)
 
-        print("Print making event maps")
-        event_maps = self.process(event_map_funcs)
 
-        print("Maziing z map")
-        z_maps_ccp4 = self.process(z_map_funcs)
+            print("Analysign events")
+            analyse_funcs = {}
+            for dtag in test_dtags:
+                task = TaskWrapper(self.event_analyser,
+                                   truncated_datasets[dtag],
+                                   xmaps[dtag],
+                                   shell_ref_map,
+                                   events[dtag],
+                                   self.grid,
+                                   )
+                analyse_funcs[dtag] = task
+            # events_analysed = self.process(analyse_funcs)
+            events_analysed = processor(analyse_funcs)
 
-        print("Making mean maps")
-        shell_maps = self.make_mean_map(self.reference,
-                                        shell_ref_map,
-                                        self.grid,
-                                        self.tree["shells"][self.shell_num]["mean_map"](),
-                                        )
+            events_analysed_computed = events_analysed
 
-        print("Making event map")
-        event_table = self.make_event_table(self.tree["shells"][self.shell_num]["event_table"](),
-                                            self.shell_dataset,
-                                            events_computed,
+            events_computed = events
+
+            # Criticise each indidual dataset (generate statistics, event map and event table)
+            z_maps_ccp4 = OrderedDict()
+
+            event_map_args = OrderedDict()
+            z_map_args = OrderedDict()
+            event_maps = OrderedDict()
+
+            z_map_funcs = OrderedDict()
+            event_map_funcs = OrderedDict()
+
+            for dtag in test_dtags:
+                event_maps[dtag] = OrderedDict()
+
+                if len(events_computed[dtag][2]) != 0:
+                    # print("Making z map args")
+                    z_map_funcs[dtag] = TaskWrapper(self.make_z_map,
+                                                    xmaps[dtag],
+                                                    truncated_datasets[dtag],
+                                                    self.tree["processed_datasets"][dtag]["z_map"](),
+                                                    shell_fit_model_scattered,
+                                                    self.grid,
+                                                    )
+
+                for event_id, events_analysis_computed in events_analysed_computed[dtag].items():
+                    # print("Print making event maps args")
+                    pandda_logging.log_map_making(xmaps[dtag],
+                                                  shell_ref_map,
+                                                  events_analysed_computed[dtag][event_id]["estimated_bdc"],
+                                                  )
+
+                    map_bdc = events_analysed_computed[dtag][event_id]["estimated_bdc"]
+                    fractional_mean_map = shell_ref_map.new_from_template(map_data=shell_ref_map.data * map_bdc,
+                                                                          sparse=shell_ref_map.is_sparse(),
+                                                                          )
+
+                    event_map = xmaps[dtag] - fractional_mean_map
+
+                    print(pandda_logging.log_summarise_map(event_map))
+
+                    event_map_funcs[(dtag, event_id)] = TaskWrapper(self.make_event_map,
+                                                                    xmaps[dtag],
+                                                                    truncated_datasets[dtag],
+                                                                    shell_ref_map,
+                                                                    events_computed[dtag][2][
+                                                                        int(event_id[1]) - 1],
+                                                                    events_analysed_computed[dtag][
+                                                                        event_id]["estimated_bdc"],
+                                                                    self.tree["processed_datasets"][dtag]["event_map"]([dtag,
+                                                                                     event_id[1],
+                                                                                     round(1-events_analysed_computed[dtag][event_id]["estimated_bdc"], 2),
+                                                                                                                        ]
+                                                                                     ),
+                                                                    self.grid,
+                                                                    )
+
+            print("Print making event maps")
+            # event_maps = self.process(event_map_funcs)
+            event_maps = processor(event_map_funcs)
+
+
+            print("Maziing z map")
+            # z_maps_ccp4 = self.process(z_map_funcs)
+            z_maps_ccp4 = processor(z_map_funcs)
+
+            print("Making mean maps")
+            shell_maps = self.make_mean_map(self.reference,
+                                            shell_ref_map,
                                             self.grid,
-                                            events_analysed_computed,
-                                            analysed_resolution=max_res,
+                                            self.tree["shells"][self.shell_num]["mean_map"](),
                                             )
+
+            print("Making event map")
+            event_table = self.make_event_table(self.tree["shells"][self.shell_num]["event_table"](),
+                                                self.shell_dataset,
+                                                events_computed,
+                                                self.grid,
+                                                events_analysed_computed,
+                                                analysed_resolution=max_res,
+                                                )
 
         return event_table
 

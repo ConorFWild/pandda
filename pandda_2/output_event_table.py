@@ -6,4 +6,7 @@ class OutputEventTable:
                  event_table,
                  event_table_path,
                  ):
-        event_table.to_csv(str(event_table_path))
+
+        event_table_sorted = event_table.sort_values("cluster_size", ascending=False)
+
+        event_table_sorted.to_csv(str(event_table_path))

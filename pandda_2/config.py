@@ -287,6 +287,11 @@ class Events:
 class Processing:
     def __init__(self, config_obj):
         self.backend = config_obj.backend
+        self.process_shells = config_obj.process_shells
+        self.process_dict_n_cpus = config_obj.process_dict_n_cpus
+        self.process_dict = config_obj.process_dict
+        self.h_vmem = config_obj.h_vmem
+        self.m_mem_free = config_obj.m_mem_free
 
 
 ########################################################################################################################

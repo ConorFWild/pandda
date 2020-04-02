@@ -288,7 +288,15 @@ class Options:
         make_mean_map_obj = make_mean_map.MakeMeanMap()
         make_event_table_obj = make_event_table.MakeEventTable()
 
-        process_in_shell = processor.ProcessorDictJoblib()
+        self.n_cpus_shells = config.processing.process_dict_n_cpus
+        self.h_vmem = config.processing.h_vmem
+        self.m_mem_free = config.processing.m_mem_free
+
+        if config.processing.process_dict == "joblib":
+            process_in_shell = processor.ProcessorDictJoblib(config.processing.process_dict_n_cpus)
+
+        elif config.processing.process_dict == "seriel":
+            process_in_shell = processor.ProcessorDict()
 
         self.process_shell = process_shell.ProcessShell(diffraction_data_truncator=diffraction_data_truncator_obj,
                                                         reference_map_getter=reference_map_getter_obj,
@@ -306,13 +314,17 @@ class Options:
                                                         make_event_table=make_event_table_obj,
                                                         process=process_in_shell,
                                                         )
-
-        # self.processer = processor.ProcessorLuigi(jobs=10,
-        #                                           parallel_env="smp",
-        #                                           n_cpu=12,
-        #                                           run_locally=False,
-        #                                           )
-        self.processer = processor.Processor()
+        print(config.processing.process_shells )
+        if config.processing.process_shells == "luigi":
+            self.processer = processor.ProcessorLuigi(jobs=10,
+                                                      parallel_env="smp",
+                                                      run_locally=False,
+                                                      n_cpu=self.n_cpus_shells,
+                                                      h_vmem=self.h_vmem,
+                                                      m_mem_free=self.m_mem_free,
+                                                      )
+        elif config.processing.process_shells == "seriel":
+            self.processer = processor.Processor()
 
         # Get site table creator
         self.create_sites_table = create_sites_table.CreateSitesTable()

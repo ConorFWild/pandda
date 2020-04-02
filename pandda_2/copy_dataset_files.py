@@ -241,6 +241,7 @@ class DatasetFileCopier:
         # TODO: make these settable from main
         self.ligand_cif_regex = "**/ligand.cif"
         self.ligand_pdb_regex = "**/ligand.pdb"
+        self.compound_dir_regex = "compound"
 
     def __call__(self,
                  dataset,
@@ -276,6 +277,11 @@ class DatasetFileCopier:
                              self.ligand_cif_regex,
                              )
 
+            self.copy_compound_dir(d,
+                                   tree["processed_datasets"][dtag]["ligand_files"](),
+                                   self.compound_dir_regex,
+                                   )
+
             print("\tConverting cifs to ligands for dataset {}".format(dtag))
 
         # Convert any cifs to usable pdbs
@@ -286,6 +292,21 @@ class DatasetFileCopier:
                             ]
                            )
 
+
+    def copy_compound_dir(self, d, output_dir, compound_dir_regex):
+        dataset_dir = p.Path(d.data.filename).parent
+        compound_dir = dataset_dir / compound_dir_regex
+
+        paths = compound_dir.glob("*")
+
+        for path in paths:
+            try:
+                rel_symlink(str(path),
+                            str(output_dir / path.name),
+                            )
+            except:
+                pass
+            
     def repr(self):
         repr = OrderedDict()
         return repr

@@ -68,11 +68,15 @@ class ProcessorLuigi:
                  parallel_env="smp",
                  n_cpu=12,
                  run_locally=False,
+                 h_vmem=100,
+                 m_mem_free=5,
                  ):
         self.jobs = jobs
         self.parallel_env = parallel_env
         self.n_cpu = n_cpu
         self.run_locally = run_locally
+        self.h_vmem = h_vmem
+        self.m_mem_free = m_mem_free
 
     def __call__(self,
                  funcs,
@@ -86,6 +90,8 @@ class ProcessorLuigi:
                       parallel_env=self.parallel_env,
                       n_cpu=self.n_cpu,
                       run_locally=False,
+                      h_vmem=self.h_vmem,
+                      m_mem_free=self.m_mem_free,
                       )
                  for func, output_path
                  in zip(funcs, output_paths)
@@ -118,6 +124,12 @@ class ProcessorDict:
     def __init__(self):
         pass
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+
     def __call__(self,
                  funcs,
                  ):
@@ -140,26 +152,43 @@ class ProcessorDictJoblib:
                  ):
         self.cpus = cpus
         self.verbosity = verbosity
+        self.parallel = None
+
+    def __enter__(self):
+        self.parallel = joblib.Parallel(n_jobs=self.cpus,
+                                        verbose=self.verbosity,
+                                        ).__enter__()
+
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.parallel.__exit__(exc_type, exc_val, exc_tb)
 
     def __call__(self,
                  funcs,
                  ):
-        keys = funcs.keys()
-        values = [funcs[key] for key in keys]
 
-        results = joblib.Parallel(n_jobs=self.cpus,
-                                  verbose=self.verbosity,
-                                  )(joblib.delayed(value)()
-                                    for value
-                                    in values
+        if hasattr(funcs, "keys"):
+
+            keys = funcs.keys()
+            values = [funcs[key] for key in keys]
+
+            processed = self.parallel(joblib.delayed(value)()
+                                      for value
+                                      in values
+                                      )
+
+            results = {key: processed[i]
+                       for i, key
+                       in enumerate(keys)
+                       }
+        else:
+            results = self.parallel(func
+                                    for func
+                                    in funcs
                                     )
 
-        results_dict = {key: results[i]
-                        for i, key
-                        in enumerate(keys)
-                        }
-
-        return results_dict
+        return results
 
     def repr(self):
         repr = OrderedDict()
