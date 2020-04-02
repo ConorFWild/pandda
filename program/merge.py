@@ -560,8 +560,8 @@ def main():
                     event_mapping,
                     )
     print("\tSynced event dirs!")
-    for record in sync_records.values():
-        print("\t" + record)
+    for key, record in sync_records.items():
+        print("\t{}: {}".format(key, record))
 
     print("Making event table of final events...")
     events_table = make_event_table(final_events)
