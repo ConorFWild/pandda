@@ -376,7 +376,7 @@ def update_events(events_to_merge,
                   sites,
                   ):
     # Get event dict
-    event_dict = []
+    event_dict = {}
     for event in old_pandda_events:
         if event.dtag not in event_dict:
             event_dict[event.dtag] = {}
