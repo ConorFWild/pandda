@@ -164,7 +164,7 @@ class Event:
     def to_record(self):
         record = {}
 
-        record["dtag"] = self.dtag,
+        record["dtag"] = self.dtag
         record["event_idx"] = self.event_idx
         record["1-BDC"] = self.occupancy
         record["analysed"] = self.analysed
@@ -462,6 +462,7 @@ def sync_event_dirs(final_events,
                     ):
     pandda_event_map_pattern = "{dtag}-event_{event_idx}_1-BDC_{occupancy}_map.ccp4"
 
+    sync_records = {}
     for event in final_events:
         event_dir_path = merged_pandda_path / "processed_datasets" / event.dtag
 
@@ -470,6 +471,7 @@ def sync_event_dirs(final_events,
             copy_directory(new_event_dir_path,
                            event_dir_path,
                            )
+            sync_records[(event.dtag, event.event_idx)] = "New dataset only analysed in new pandda"
 
         event_map_path = event_dir_path / pandda_event_map_pattern.format(dtag=event.dtag,
                                                                           event_idx=event.event_idx,
@@ -486,7 +488,11 @@ def sync_event_dirs(final_events,
             copy_file(new_pandda_event_map_path,
                       event_map_path,
                       )
+            sync_records[(event.dtag, event.event_idx)] = "New event from new PanDDA that could not be matched"
+        else:
+            sync_records[(event.dtag, event.event_idx)] = "Event was matched or missing in new pandda"
 
+    return sync_records
 
 def make_event_table(final_events):
     records = []
@@ -548,12 +554,14 @@ def main():
 
     # Update the names of event maps
     print("Syncing new systems and their event maps...")
-    sync_event_dirs(final_events,
+    sync_records = sync_event_dirs(final_events,
                     config.new_pandda_path,
                     output.merged_pandda_path,
                     event_mapping,
                     )
     print("\tSynced event dirs!")
+    for record in sync_records.values():
+        print("\t" + record)
 
     print("Making event table of final events...")
     events_table = make_event_table(final_events)
