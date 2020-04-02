@@ -111,8 +111,7 @@ class Event:
                  global_correlation_to_average_map,
                  local_correlation_to_average_map,
                  map_uncertainty,
-                 noisy,
-                 zmap,
+                 noisy_zmap,
                  r_free,
                  r_work,
                  refx,
@@ -143,8 +142,7 @@ class Event:
         self.global_correlation_to_average_map = global_correlation_to_average_map
         self.local_correlation_to_average_map = local_correlation_to_average_map
         self.map_uncertainty = map_uncertainty
-        self.noisy = noisy
-        self.zmap = zmap
+        self.noisy_zmap = noisy_zmap
         self.r_free = r_free
         self.r_work = r_work
         self.refx = refx
@@ -177,8 +175,7 @@ class Event:
         record["global_correlation_to_average_map"] = self.global_correlation_to_average_map
         record["local_correlation_to_average_map"] = self.local_correlation_to_average_map
         record["map_uncertainty"] = self.map_uncertainty
-        record["noisy"] = self.noisy
-        record["zmap"] = self.zmap
+        record["noisy zmap"] = self.noisy_zmap
         record["r_free"] = self.r_free
         record["r_work"] = self.r_work
         record["refx"] = self.refx
@@ -214,8 +211,7 @@ class Event:
                      global_correlation_to_average_map=record["global_correlation_to_average_map"],
                      local_correlation_to_average_map=record["local_correlation_to_average_map"],
                      map_uncertainty=record["map_uncertainty"],
-                     noisy=record["noisy"],
-                     zmap=record["zmap"],
+                     noisy_zmap=record["noisy zmap"],
                      r_free=record["r_free"],
                      r_work=record["r_work"],
                      refx=record["refx"],
@@ -413,8 +409,7 @@ def update_events(events_to_merge,
                           global_correlation_to_average_map=event.global_correlation_to_average_map,
                           local_correlation_to_average_map=event.local_correlation_to_average_map,
                           map_uncertainty=event.map_uncertainty,
-                          noisy=event.noisy,
-                          zmap=event.zmap,
+                          noisy_zmap=event.noisy_zmap,
                           r_free=event.r_free,
                           r_work=event.r_work,
                           refx=event.refx,
