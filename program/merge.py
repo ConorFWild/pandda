@@ -457,18 +457,18 @@ def copy_directory(directory_1, directory_2):
 
 def sync_event_dirs(final_events,
                     new_pandda_path,
-                    old_pandda_path,
+                    merged_pandda_path,
                     event_mapping,
                     ):
     pandda_event_map_pattern = "{dtag}-event_{event_idx}_1-BDC_{occupancy}_map.ccp4"
 
     for event in final_events:
-        event_dir_path = old_pandda_path / "processed_datasets" / event.dtag
+        event_dir_path = merged_pandda_path / "processed_datasets" / event.dtag
 
         if not event_dir_path.exists():
             new_event_dir_path = new_pandda_path / "processed_datasets" / event.dtag
-            copy_directory(event_dir_path,
-                           new_event_dir_path,
+            copy_directory(new_event_dir_path,
+                           event_dir_path,
                            )
 
         event_map_path = event_dir_path / pandda_event_map_pattern.format(dtag=event.dtag,
@@ -550,7 +550,7 @@ def main():
     print("Syncing new systems and their event maps...")
     sync_event_dirs(final_events,
                     config.new_pandda_path,
-                    config.merged_pandda_path,
+                    output.merged_pandda_path,
                     event_mapping,
                     )
     print("\tSynced event dirs!")
