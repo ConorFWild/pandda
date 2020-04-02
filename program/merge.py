@@ -491,9 +491,11 @@ def sync_event_dirs(final_events,
                       )
             sync_records[(event.dtag, event.event_idx)] = "New event from new PanDDA that could not be matched"
         else:
-            sync_records[(event.dtag, event.event_idx)] = "Event was matched or missing in new pandda"
+            sync_records[(
+            event.dtag, event.event_idx)] = "Event was matched or missing in new pandda - no change from new results"
 
     return sync_records
+
 
 def make_event_table(final_events):
     records = []
@@ -509,8 +511,10 @@ def make_event_table(final_events):
 def output_events_table(event_table,
                         pandda_path,
                         ):
-    event_table_path = pandda_path / "analyses" / "pandda_inspect_events.csv"
-    event_table.to_csv(str(event_table_path))
+    event_table_analyse_path = pandda_path / "analyses" / "pandda_inspect_events.csv"
+    event_table.to_csv(str(event_table_analyse_path))
+    event_table_inspect_path = pandda_path / "analyses" / "pandda_analyse_events.csv"
+    event_table.to_csv(str(event_table_inspect_path))
 
 
 def main():
@@ -556,10 +560,10 @@ def main():
     # Update the names of event maps
     print("Syncing new systems and their event maps...")
     sync_records = sync_event_dirs(final_events,
-                    config.new_pandda_path,
-                    output.merged_pandda_path,
-                    event_mapping,
-                    )
+                                   config.new_pandda_path,
+                                   output.merged_pandda_path,
+                                   event_mapping,
+                                   )
     print("\tSynced event dirs!")
     for key, record in sync_records.items():
         print("\t{}: {}".format(key, record))
