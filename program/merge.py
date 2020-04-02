@@ -201,6 +201,7 @@ class Event:
 
     @staticmethod
     def from_record(record):
+        print(record)
         return Event(row=record,
                      dtag=record["dtag"],
                      event_idx=record["event_idx"],
