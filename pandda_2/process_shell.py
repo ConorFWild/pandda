@@ -64,15 +64,17 @@ class ProcessShell:
         self.tree = tree
         self.shell_num = shell_num
 
+        log = pandda_logging.PanDDALog(log_file=tree["shells"][shell_num]() / "shell_log.txt")
+
         with self.process as processor:
 
 
             try:
-                print("Checking for event table at: {}".format(tree["shells"][self.shell_num]["event_table"]()))
+                log("Checking for event table at: {}".format(tree["shells"][self.shell_num]["event_table"]()))
                 event_table = pd.read_csv(tree["shells"][self.shell_num]["event_table"]())
                 return event_table
             except:
-                print("Shell {} not yet processed!".format(self.shell_num))
+                log("Shell {} not yet processed!".format(self.shell_num))
 
             # ###############################################
             # Get resolution
@@ -108,13 +110,16 @@ class ProcessShell:
                           in dtags
                           if (dtag in self.shell_dataset.partition_datasets("test").keys())
                           ]
-            # print("\tNumber of train dtags: {}".format(len(train_dtags)))
-            # print("\tNumber of test dtags: {}".format(len(test_dtags)))
+            log(pandda_logging.log_shell_setup(dtags,
+                                               train_dtags,
+                                               test_dtags,
+                                               max_res,
+                                               )
+                )
 
             # ###############################################
             # Truncate datasets
             # ###############################################
-            print("Truncaitng Diffractions")
             truncated_reference, truncated_datasets = self.diffraction_data_truncator(self.shell_dataset.datasets,
                                                                                       self.reference,
                                                                                       )
@@ -124,14 +129,12 @@ class ProcessShell:
             # ###############################################
             # Generate maps
             # ###############################################
-            print("Getting Shell refeence map")
             shell_ref_map = self.get_reference_map(self.reference_map_getter,
                                                    self.reference,
                                                    shell_max_res,
                                                    self.grid,
                                                    )
 
-            print("Getting XMaps")
             xmap_funcs = {}
             for dtag in truncated_datasets.keys():
                 task = TaskWrapper(self.map_loader,
@@ -142,25 +145,12 @@ class ProcessShell:
                                    )
                 xmap_funcs[dtag] = task
 
-            # print("\tNum xmap funcs: {}".format(len(xmap_funcs)))
-            # print("\tNumber of truncated datasets is: {}".format(len(truncated_datasets)))
-            # print("\tNum of keys in xmaps_funcs is:{}".format(xmap_funcs.keys()))
-            # xmaps = self.process(xmap_funcs)
-            print(processor)
-            print(processor.parallel)
-
             xmaps = processor(xmap_funcs)
-            print(xmaps)
-            print(xmaps.values()[0])
-            print(type(xmaps.values()[0]))
-
+            log(pandda_logging.log_shell_xmaps(xmaps))
 
             # ###############################################
             # Fit statistical model to trianing sets
             # ###############################################
-            print("Fitting model")
-            # print("\tNumber of xmaps: {}".format(len(xmaps)))
-
             shell_fit_model = self.fit(self.statistical_model,
                                        [xmaps[dtag] for dtag in train_dtags],
                                        [xmaps[dtag] for dtag in test_dtags],
@@ -168,19 +158,11 @@ class ProcessShell:
                                        )
 
             shell_fit_model_scattered = shell_fit_model
+            log(pandda_logging.log_shell_fit_model(shell_fit_model))
 
             # ###############################################
             # Find events
             # ###############################################
-
-            xmaps = processor(xmap_funcs)
-            print(xmaps)
-            print(xmaps.values()[0])
-            print(type(xmaps.values()[0]))
-            print(processor)
-            print(processor.parallel)
-
-            print("Evaluating model")
             zmap_funcs = {}
             for dtag in test_dtags:
                 task = TaskWrapper(self.evaluate_model,
@@ -188,12 +170,9 @@ class ProcessShell:
                                    xmaps[dtag],
                                    )
                 zmap_funcs[dtag] = task
-            # zmaps = self.process(zmap_funcs)
-            print(processor)
-            print("processor: {}".format(processor.parallel))
             zmaps = processor(zmap_funcs)
+            log(pandda_logging.log_shell_zmaps(zmaps))
 
-            print("Getting clusters")
             clusters_funcs = {}
             for dtag in test_dtags:
                 task = TaskWrapper(self.cluster_outliers,
@@ -202,10 +181,9 @@ class ProcessShell:
                                    self.grid,
                                    )
                 clusters_funcs[dtag] = task
-            # clusters = self.process(clusters_funcs)
             clusters = processor(clusters_funcs)
+            log(pandda_logging.log_clusters(clusters))
 
-            print("Getting events")
             filter_funcs = {}
             for dtag in test_dtags:
                 task = TaskWrapper(self.filter_clusters,
@@ -214,11 +192,9 @@ class ProcessShell:
                                    self.grid,
                                    )
                 filter_funcs[dtag] = task
-            # events = self.process(filter_funcs)
             events = processor(filter_funcs)
+            log(pandda_logging.log_shell_events(events))
 
-
-            print("Analysign events")
             analyse_funcs = {}
             for dtag in test_dtags:
                 task = TaskWrapper(self.event_analyser,
@@ -235,6 +211,8 @@ class ProcessShell:
             events_analysed_computed = events_analysed
 
             events_computed = events
+
+            log(pandda_logging.log_shell_analysed_events(events_analysed))
 
             # Criticise each indidual dataset (generate statistics, event map and event table)
             z_maps_ccp4 = OrderedDict()
@@ -260,21 +238,6 @@ class ProcessShell:
                                                     )
 
                 for event_id, events_analysis_computed in events_analysed_computed[dtag].items():
-                    # print("Print making event maps args")
-                    pandda_logging.log_map_making(xmaps[dtag],
-                                                  shell_ref_map,
-                                                  events_analysed_computed[dtag][event_id]["estimated_bdc"],
-                                                  )
-
-                    map_bdc = events_analysed_computed[dtag][event_id]["estimated_bdc"]
-                    fractional_mean_map = shell_ref_map.new_from_template(map_data=shell_ref_map.data * map_bdc,
-                                                                          sparse=shell_ref_map.is_sparse(),
-                                                                          )
-
-                    event_map = xmaps[dtag] - fractional_mean_map
-
-                    print(pandda_logging.log_summarise_map(event_map))
-
                     event_map_funcs[(dtag, event_id)] = TaskWrapper(self.make_event_map,
                                                                     xmaps[dtag],
                                                                     truncated_datasets[dtag],
@@ -291,23 +254,19 @@ class ProcessShell:
                                                                     self.grid,
                                                                     )
 
-            print("Print making event maps")
-            # event_maps = self.process(event_map_funcs)
             event_maps = processor(event_map_funcs)
+            log(pandda_logging.log_shell_output_event_maps(event_maps))
 
-
-            print("Maziing z map")
-            # z_maps_ccp4 = self.process(z_map_funcs)
             z_maps_ccp4 = processor(z_map_funcs)
+            log(pandda_logging.log_shell_output_zmaps(z_maps_ccp4))
 
-            print("Making mean maps")
             shell_maps = self.make_mean_map(self.reference,
                                             shell_ref_map,
                                             self.grid,
                                             self.tree["shells"][self.shell_num]["mean_map"](),
                                             )
+            log(pandda_logging.log_output_mean_map(shell_maps))
 
-            print("Making event map")
             event_table = self.make_event_table(self.tree["shells"][self.shell_num]["event_table"](),
                                                 self.shell_dataset,
                                                 events_computed,
@@ -315,31 +274,9 @@ class ProcessShell:
                                                 events_analysed_computed,
                                                 analysed_resolution=max_res,
                                                 )
+            log(pandda_logging.log_shell_event_table(event_table))
 
         return event_table
-
-    def repr(self):
-        repr = OrderedDict()
-        repr["diffraction_data_truncator"] = self.diffraction_data_truncator.repr()
-        repr["reference_map_getter"] = self.reference_map_getter.repr()
-        repr["get_reference_map"] = self.get_reference_map.repr()
-
-        repr["map_loader"] = self.map_loader.repr()
-        repr["statistical_model"] = self.statistical_model.repr()
-        repr["fit"] = self.fit.repr()
-        repr["evaluate_model"] = self.evaluate_model.repr()
-        repr["cluster_outliers"] = self.cluster_outliers.repr()
-        repr["filter_clusters"] = self.filter_clusters.repr()
-        repr["event_analyser"] = self.event_analyser.repr()
-
-        repr["make_event_map"] = self.make_event_map.repr()
-        repr["make_z_map"] = self.make_z_map.repr()
-        repr["make_mean_map"] = self.make_mean_map.repr()
-        repr["make_event_table"] = self.make_event_table.repr()
-
-        repr["process"] = self.process.repr()
-
-        return repr
 
 
 class TaskWrapper:

@@ -174,9 +174,89 @@ def log_shell_tasks(shell_processors):
     return logstr
 
 
+def log_shell_setup(dtags,
+                    train_dtags,
+                    test_dtags,
+                    max_res,
+                    ):
+    logstr = title("Set up shell")
+    logstr += indent("Processing {} training dtags".format(len(train_dtags)))
+    logstr += indent("Processing {} testing dtags".format(len(test_dtags)))
+    logstr += indent("Maximum shell resolution".format(max_res))
+    logstr += indent("Train dtags: {}".format(train_dtags))
+    logstr += indent("Test dtags: {}".format(test_dtags))
+    return logstr
+
+
+def log_shell_xmaps(xmaps):
+    logstr = title("Calculated the xmaps for the shell")
+    logstr += indent("Claclulated {} xmaps".format(len(xmaps)))
+    return logstr
+
+
+def log_shell_fit_model(shell_fit_model):
+    logstr = title("Calculated the statistical model for the shell")
+    return logstr
+
+
+def log_shell_zmaps(zmaps):
+    logstr = title("Calculated the v for the shell")
+    logstr += indent("Calclulated {} zmaps".format(len(zmaps)))
+    return logstr
+
+
+def log_clusters(clusters):
+    logstr = title("Got clusters for this resolution shell")
+    logstr += indent("Got {} clusters before filtering".format(len(clusters)))
+    return logstr
+
+
+def log_shell_events(events):
+    logstr = title("Got clusters for this resolution shell")
+    logstr += indent("Got {} events".format(len(events)))
+    return logstr
+
+
+def log_shell_analysed_events(events_analysed):
+    logstr = title("Analysed events")
+    logstr += indent("Got {} analysed events".format(events_analysed))
+    return logstr
+
+
+def log_shell_output_event_maps(event_maps):
+    logstr = title("Ouput event maps")
+    return logstr
+
+
+def log_shell_output_zmaps(z_maps_ccp4):
+    logstr = title("Output z maps")
+    return logstr
+
+
+def log_output_mean_map(shell_maps):
+    logstr = title("Output the shell maps")
+    return logstr
+
+
+def log_shell_event_table(event_table):
+    logstr = title("Output the events table")
+    logstr += indent("Event table has {} events".format(len(event_table)))
+
+
 def log_process_shells(event_tables):
     logstr = ""
     logstr += title("Completed processing shells!")
+    return logstr
+
+
+def add_shell_logs(shell_log_paths):
+    logstr = ""
+    for i, shell_log_path in enumerate(shell_log_paths):
+        logstr += title("Shell {} log".format(i))
+        with open(str(shell_log_path), "r") as f:
+            shell_log_str = f.read()
+        logstr += shell_log_str
+
     return logstr
 
 
@@ -209,4 +289,9 @@ def log_finish_pandda(pandda_start_time,
     logstr = ""
     logstr += title("PanDDA Finished sucessfully!")
     logstr += "PanDDA finished in {}".format(pandda_finish_time - pandda_start_time)
+    return logstr
+
+def error(exception):
+    logstr = title("AN ERROR OCCURED DURING THE EXCECUTION OF PanDDA!")
+    logstr += indent(str(exception))
     return logstr
