@@ -297,7 +297,8 @@ def get_events_to_merge(old_pandda_events,
                         only_built,
                         distance_cutoff=6.0,
                         ):
-    events_to_merge = []
+    matches_old_to_new = {}
+    unmatched_events = []
     # Get closest old event to the new events
     for event in new_pandda_events:
         closest_event, distance = get_closest_event(event,
@@ -305,13 +306,13 @@ def get_events_to_merge(old_pandda_events,
                                                     )
 
         if closest_event is None:
-            events_to_merge.append(event)
+            unmatched_events.append(event)
         elif distance > distance_cutoff:
-            events_to_merge.append(event)
+            unmatched_events.append(event)
         else:
-            continue
+            matches_old_to_new[(closest_event.dtag, closest_event.event_idx)] = event
 
-    return events_to_merge
+    return unmatched_events, matches_old_to_new
 
 
 def copy_file(path_1,
@@ -371,68 +372,165 @@ def get_closest_site(event,
     return sites[closest_site_idx]
 
 
-def update_events(events_to_merge,
+def update_events(unmatched_events,
+                  matches_old_to_new,
                   old_pandda_events,
                   sites,
                   ):
-    # Get event dict
-    event_dict = {}
-    for event in old_pandda_events:
-        if event.dtag not in event_dict:
-            event_dict[event.dtag] = {}
-
-        event_dict[event.dtag][event.event_idx] = event
-
-    # Create new events
+    merged_events = {}
     event_mapping = {}
-    new_events = []
-    for event in events_to_merge:
-        if event.dtag in event_dict:
-            new_event_idx = max(event_dict[event.dtag].keys()) + 1
+
+    # Get base events
+    for event in old_pandda_events:
+        merged_events[(event.dtag, event.event_idx)] = event
+        # event_mapping[(event.dtag, event.event_idx)] = event
+
+    # Update for merged events
+    for old_event_idx, new_event in matches_old_to_new.items():
+        old_event = merged_events[old_event_idx]
+        closest_site = merged_events[old_event_idx].site
+        new_event = Event(row=new_event.row,
+                          dtag=old_event.dtag,
+                          event_idx=new_event.event_idx,
+                          occupancy=new_event.occupancy,
+                          analysed=new_event.analysed,
+                          analysed_resolution=new_event.analysed_resolution,
+                          cluster_size=new_event.cluster_size,
+                          exclude_from_characterisation=new_event.exclude_from_characterisation,
+                          exclude_from_zmap_analysis=new_event.exclude_from_zmap_analysis,
+                          global_correlation_to_average_map=new_event.global_correlation_to_average_map,
+                          local_correlation_to_average_map=new_event.local_correlation_to_average_map,
+                          map_uncertainty=new_event.map_uncertainty,
+                          noisy_zmap=new_event.noisy_zmap,
+                          r_free=new_event.r_free,
+                          r_work=new_event.r_work,
+                          refx=new_event.refx,
+                          refy=new_event.refy,
+                          refz=new_event.refz,
+                          rejected=new_event.rejected,
+                          site_idx=closest_site.site_idx,
+                          x=new_event.x,
+                          y=new_event.y,
+                          z=new_event.z,
+                          z_mean=new_event.z_mean,
+                          z_peak=new_event.z_peak,
+                          interesting=new_event.interesting,
+                          ligand_placed=new_event.ligand_placed,
+                          ligand_confidence=new_event.ligand_confidence,
+                          comment=new_event.comment,
+                          viewed=new_event.viewed,
+                          )
+        merged_events[old_event_idx] = new_event
+        event_mapping[old_event_idx] = new_event
+
+    # Update for completely new events
+    for unmatched_event in unmatched_events:
+        dataset_events = [event_idx for event_idx in merged_events.keys() if event_idx[0] == unmatched_event.dtag]
+        if len(dataset_events) > 0:
+            new_event_idx = len(dataset_events) + 1
         else:
-            event_dict[event.dtag] = {}
             new_event_idx = 1
 
-        closest_site = get_closest_site(event,
+        closest_site = get_closest_site(unmatched_event,
                                         sites,
                                         )
-        new_event = Event(row=event.row,
-                          dtag=event.dtag,
+
+        new_event = Event(row=unmatched_event.row,
+                          dtag=unmatched_event.dtag,
                           event_idx=new_event_idx,
-                          occupancy=event.occupancy,
-                          analysed=event.analysed,
-                          analysed_resolution=event.analysed_resolution,
-                          cluster_size=event.cluster_size,
-                          exclude_from_characterisation=event.exclude_from_characterisation,
-                          exclude_from_zmap_analysis=event.exclude_from_zmap_analysis,
-                          global_correlation_to_average_map=event.global_correlation_to_average_map,
-                          local_correlation_to_average_map=event.local_correlation_to_average_map,
-                          map_uncertainty=event.map_uncertainty,
-                          noisy_zmap=event.noisy_zmap,
-                          r_free=event.r_free,
-                          r_work=event.r_work,
-                          refx=event.refx,
-                          refy=event.refy,
-                          refz=event.refz,
-                          rejected=event.rejected,
+                          occupancy=unmatched_event.occupancy,
+                          analysed=unmatched_event.analysed,
+                          analysed_resolution=unmatched_event.analysed_resolution,
+                          cluster_size=unmatched_event.cluster_size,
+                          exclude_from_characterisation=unmatched_event.exclude_from_characterisation,
+                          exclude_from_zmap_analysis=unmatched_event.exclude_from_zmap_analysis,
+                          global_correlation_to_average_map=unmatched_event.global_correlation_to_average_map,
+                          local_correlation_to_average_map=unmatched_event.local_correlation_to_average_map,
+                          map_uncertainty=unmatched_event.map_uncertainty,
+                          noisy_zmap=unmatched_event.noisy_zmap,
+                          r_free=unmatched_event.r_free,
+                          r_work=unmatched_event.r_work,
+                          refx=unmatched_event.refx,
+                          refy=unmatched_event.refy,
+                          refz=unmatched_event.refz,
+                          rejected=unmatched_event.rejected,
                           site_idx=closest_site.site_idx,
-                          x=event.x,
-                          y=event.y,
-                          z=event.z,
-                          z_mean=event.z_mean,
-                          z_peak=event.z_peak,
-                          interesting=event.interesting,
-                          ligand_placed=event.ligand_placed,
-                          ligand_confidence=event.ligand_confidence,
-                          comment=event.comment,
-                          viewed=event.viewed,
+                          x=unmatched_event.x,
+                          y=unmatched_event.y,
+                          z=unmatched_event.z,
+                          z_mean=unmatched_event.z_mean,
+                          z_peak=unmatched_event.z_peak,
+                          interesting=unmatched_event.interesting,
+                          ligand_placed=unmatched_event.ligand_placed,
+                          ligand_confidence=unmatched_event.ligand_confidence,
+                          comment=unmatched_event.comment,
+                          viewed=unmatched_event.viewed,
                           )
-        new_events.append(new_event)
-        event_mapping[(new_event.dtag, new_event.event_idx)] = event
 
-    final_events = new_events + old_pandda_events
+        merged_events[(unmatched_event.dtag, new_event_idx)] = new_event
+        event_mapping[(unmatched_event.dtag, new_event_idx)] = unmatched_event
 
-    return final_events, event_mapping
+    return merged_events, event_mapping
+
+    #         # Get event dict
+    # event_dict = {}
+    # for event in old_pandda_events:
+    #     if event.dtag not in event_dict:
+    #         event_dict[event.dtag] = {}
+    #
+    #     event_dict[event.dtag][event.event_idx] = event
+    #
+    # # Create new events
+    # event_mapping = {}
+    # new_events = []
+    # for event in events_to_merge:
+    #     if event.dtag in event_dict:
+    #         new_event_idx = max(event_dict[event.dtag].keys()) + 1
+    #     else:
+    #         event_dict[event.dtag] = {}
+    #         new_event_idx = 1
+    #
+    #     closest_site = get_closest_site(event,
+    #                                     sites,
+    #                                     )
+    #     new_event = Event(row=event.row,
+    #                       dtag=event.dtag,
+    #                       event_idx=new_event_idx,
+    #                       occupancy=event.occupancy,
+    #                       analysed=event.analysed,
+    #                       analysed_resolution=event.analysed_resolution,
+    #                       cluster_size=event.cluster_size,
+    #                       exclude_from_characterisation=event.exclude_from_characterisation,
+    #                       exclude_from_zmap_analysis=event.exclude_from_zmap_analysis,
+    #                       global_correlation_to_average_map=event.global_correlation_to_average_map,
+    #                       local_correlation_to_average_map=event.local_correlation_to_average_map,
+    #                       map_uncertainty=event.map_uncertainty,
+    #                       noisy_zmap=event.noisy_zmap,
+    #                       r_free=event.r_free,
+    #                       r_work=event.r_work,
+    #                       refx=event.refx,
+    #                       refy=event.refy,
+    #                       refz=event.refz,
+    #                       rejected=event.rejected,
+    #                       site_idx=closest_site.site_idx,
+    #                       x=event.x,
+    #                       y=event.y,
+    #                       z=event.z,
+    #                       z_mean=event.z_mean,
+    #                       z_peak=event.z_peak,
+    #                       interesting=event.interesting,
+    #                       ligand_placed=event.ligand_placed,
+    #                       ligand_confidence=event.ligand_confidence,
+    #                       comment=event.comment,
+    #                       viewed=event.viewed,
+    #                       )
+    #     new_events.append(new_event)
+    #     # Map FINAL event id to ORIGINAL event id
+    #     event_mapping[(new_event.dtag, new_event.event_idx)] = event
+    #
+    # final_events = new_events + old_pandda_events
+
+    # return merged_events, event_mapping
 
 
 def copy_models(events_to_merge,
@@ -458,41 +556,67 @@ def copy_directory(directory_1, directory_2):
 def sync_event_dirs(final_events,
                     new_pandda_path,
                     merged_pandda_path,
-                    event_mapping,
+                    event_mapping_merged_to_original,
                     ):
     pandda_event_map_pattern = "{dtag}-event_{event_idx}_1-BDC_{occupancy}_map.ccp4"
+    pandda_event_model_pattern = "{dtag}-pandda-model.pdb"
 
     sync_records = {}
-    for event in final_events:
-        event_dir_path = merged_pandda_path / "processed_datasets" / event.dtag
+    for event_id, event in final_events.items():
+        # If event is not to be updated, skip
+        if event_id not in event_mapping_merged_to_original[event_id]:
+            sync_records[(event.dtag, event.event_idx)] = "\t\tNo changes to event {}".format(event_id)
+            continue
 
-        if not event_dir_path.exists():
-            new_event_dir_path = new_pandda_path / "processed_datasets" / event.dtag
+        # If dataset is completely new, copy from new pandda and continue
+        merged_event_dir_path = merged_pandda_path / "processed_datasets" / event.dtag
+        new_event_dir_path = new_pandda_path / "processed_datasets" / event.dtag
+        if not merged_event_dir_path.exists():
             copy_directory(new_event_dir_path,
-                           event_dir_path,
+                           merged_event_dir_path,
                            )
             sync_records[(event.dtag, event.event_idx)] = "New dataset only analysed in new pandda"
             continue
 
-        event_map_path = event_dir_path / pandda_event_map_pattern.format(dtag=event.dtag,
-                                                                          event_idx=event.event_idx,
-                                                                          occupancy=event.occupancy,
-                                                                          )
-        if not event_map_path.exists():
-            new_pandda_event_dir_path = new_pandda_path / "processed_datasets" / event.dtag
-            new_pandda_event = event_mapping[(event.dtag, event.event_idx)]
-            new_pandda_event_map_name = pandda_event_map_pattern.format(dtag=event.dtag,
-                                                                        event_idx=new_pandda_event.event_idx,
-                                                                        occupancy=event.occupancy,
-                                                                        )
-            new_pandda_event_map_path = new_pandda_event_dir_path / new_pandda_event_map_name
-            copy_file(new_pandda_event_map_path,
-                      event_map_path,
+        # If the event is new or updated, copy the new event map and model if they are there
+        new_event = event_mapping_merged_to_original[event_id]
+
+        # Copy event map
+        new_event_map_path = new_event_dir_path / pandda_event_map_pattern.format(dtag=new_event.dtag,
+                                                                                  event_idx=new_event.event_idx,
+                                                                                  occupancy=new_event.occupancy,
+                                                                                  )
+        merged_event_map_path = merged_event_dir_path / pandda_event_map_pattern.format(dtag=event.dtag,
+                                                                                        event_idx=event.event_idx,
+                                                                                        occupancy=event.occupancy,
+                                                                                        )
+        if new_event_map_path.exists():
+            copy_file(new_event_map_path,
+                      merged_event_map_path,
                       )
-            sync_records[(event.dtag, event.event_idx)] = "New event from new PanDDA that could not be matched"
+            sync_records[(event.dtag, event.event_idx)] = "Copied event map for new event"
         else:
-            sync_records[(
-            event.dtag, event.event_idx)] = "Event was matched or missing in new pandda - no change from new results"
+            sync_records[(event.dtag, event.event_idx)] = "No event map for this event"
+
+        # Copy model
+        new_model_path = new_event_dir_path / "modelled_structures" / pandda_event_model_pattern.format(
+            dtag=new_event.dtag,
+            event_idx=new_event.event_idx,
+            occupancy=new_event.occupancy,
+        )
+        merged_model_path = new_event_dir_path / "modelled_structures" / pandda_event_model_pattern.format(
+            dtag=event.dtag,
+            event_idx=event.event_idx,
+            occupancy=event.occupancy,
+        )
+
+        if new_model_path.exists():
+            copy_file(new_model_path,
+                      merged_model_path,
+                      )
+            sync_records[(event.dtag, event.event_idx)] = "Copied model for new event"
+        else:
+            sync_records[(event.dtag, event.event_idx)] = "No model for this event"
 
     return sync_records
 
@@ -540,18 +664,20 @@ def main():
     print("\tGot {} events from the new pandda".format(len(new_pandda_events)))
 
     print("Figuring out which events to merge...")
-    events_to_merge = get_events_to_merge(old_pandda_events,
-                                          new_pandda_events,
-                                          config.only_built,
-                                          )
-    print("\tGot {} events to merge...".format(len(events_to_merge)))
+    unmatched_events, matches_old_to_new = get_events_to_merge(old_pandda_events,
+                                                               new_pandda_events,
+                                                               config.only_built,
+                                                               )
+    print("\tGot {} unmatched events...".format(len(unmatched_events)))
+    print("\tGot {} matched events...".format(len(matches_old_to_new)))
 
     print("Getting sites of old pandda")
     sites = get_sites(old_pandda_events)
     print("\tGot {} sites".format(len(sites)))
 
     print("Updating events...")
-    final_events, event_mapping = update_events(events_to_merge,
+    final_events, event_mapping = update_events(unmatched_events,
+                                                matches_old_to_new,
                                                 old_pandda_events,
                                                 sites,
                                                 )
