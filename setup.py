@@ -15,7 +15,6 @@ setuptools.setup(
     version="0.0.3",
     author="Conor Francis Wild",
     author_email="conor.wild@sky.com",
-    cmdclass={"install": CustomInstallCommand},
     description="A package for handling many crystalographic datasets simultainiously",
     long_description="",
     long_description_content_type="text/markdown",
