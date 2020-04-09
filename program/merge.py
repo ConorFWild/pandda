@@ -279,8 +279,8 @@ def get_closest_event(event,
     else:
         distances = []
         for dtag_event in events_for_dtag:
-            distance = get_distance(event,
-                                    dtag_event,
+            distance = get_distance(event.get_coords(),
+                                    dtag_event.get_coords(),
                                     )
             distances.append(distance)
 
