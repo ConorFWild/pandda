@@ -272,7 +272,7 @@ def get_closest_event(event,
     events_for_dtag = []
     for old_event in old_pandda_events:
         if old_event.dtag == event.dtag:
-            events_for_dtag.append(event)
+            events_for_dtag.append(old_event)
 
     if len(events_for_dtag) == 0:
         return None, 0
