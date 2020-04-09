@@ -604,7 +604,7 @@ def sync_event_dirs(final_events,
             event_idx=new_event.event_idx,
             occupancy=new_event.occupancy,
         )
-        merged_model_path = new_event_dir_path / "modelled_structures" / pandda_event_model_pattern.format(
+        merged_model_path = merged_event_dir_path / "modelled_structures" / pandda_event_model_pattern.format(
             dtag=event.dtag,
             event_idx=event.event_idx,
             occupancy=event.occupancy,
