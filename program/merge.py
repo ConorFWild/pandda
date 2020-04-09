@@ -386,6 +386,8 @@ def update_events(unmatched_events,
         # event_mapping[(event.dtag, event.event_idx)] = event
 
     # Update for merged events
+    print(merged_events)
+    print(matches_old_to_new)
     for old_event_idx, new_event in matches_old_to_new.items():
         old_event = merged_events[old_event_idx]
         closest_site = merged_events[old_event_idx].site_idx
