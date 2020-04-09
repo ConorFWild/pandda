@@ -386,8 +386,6 @@ def update_events(unmatched_events,
         # event_mapping[(event.dtag, event.event_idx)] = event
 
     # Update for merged events
-    print(merged_events)
-    print(matches_old_to_new)
     for old_event_idx, new_event in matches_old_to_new.items():
         old_event = merged_events[old_event_idx]
         closest_site = merged_events[old_event_idx].site_idx
@@ -566,7 +564,7 @@ def sync_event_dirs(final_events,
     sync_records = {}
     for event_id, event in final_events.items():
         # If event is not to be updated, skip
-        if event_id not in event_mapping_merged_to_original[event_id]:
+        if event_id not in event_mapping_merged_to_original:
             sync_records[(event.dtag, event.event_idx)] = "\t\tNo changes to event {}".format(event_id)
             continue
 
