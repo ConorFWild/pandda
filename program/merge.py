@@ -623,7 +623,7 @@ def sync_event_dirs(final_events,
 
 def make_event_table(final_events):
     records = []
-    for event in final_events:
+    for event_idx, event in final_events.items():
         record = event.to_record()
         records.append(record)
 
