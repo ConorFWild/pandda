@@ -179,6 +179,7 @@ class Params:
         self.excluding = Excluding(config_obj.excluding)
         self.z_map_anlysis = ZMapAnalysis(config_obj.z_map_analysis)
         self.background_correction = BackgroundCorrection(config_obj.background_correction)
+        self.statistical_maps = StatisticalMaps(config_obj.statistical_maps)
 
 
 class DiffractionData:
@@ -270,6 +271,12 @@ class BackgroundCorrection:
 class AgglomerativeHierarchical:
     def __init__(self, config_obj):
         self.clustering_cutoff = config_obj.clustering_cutoff
+
+
+class StatisticalMaps:
+    def __init__(self, config_obj):
+        self.min_build_datasets = config_obj.min_build_datasets
+        self.max_build_datasets = config_obj.max_build_datasets
 
 
 ########################################################################################################################

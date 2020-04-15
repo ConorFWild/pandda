@@ -265,8 +265,8 @@ class Options:
                                     )
 
         # Get resolution shell scheme
-        self.create_shells = create_shells.CreateShells(min_train_datasets=28,
-                                                        max_test_datasets=40,
+        self.create_shells = create_shells.CreateShells(min_train_datasets=config.params.statistical_maps.min_build_datasets,
+                                                        max_test_datasets=config.params.statistical_maps.max_build_datasets,
                                                         cutoff=0.1,
                                                         )
 
