@@ -64,18 +64,7 @@ pandda
             reprocess_datasets = None
                 .help = "Selection of existing datasets to reproces (treat as new datasets) - comma separated list of dataset tags. Setting this will set flags.existing_datasets=reload."
                 .type = str
-            test = None
-                .help = "Only load these datasets, don't load any others - comma separated list of dataset tags"
-                .type = str
-            train = None
-                .help = "Only load these datasets, don't load any others - comma separated list of dataset tags"
-                .type = str
-            not_test = None
-                .help = "Only load these datasets, don't load any others - comma separated list of dataset tags"
-                .type = str
-            not_train = None
-                .help = "Only load these datasets, don't load any others - comma separated list of dataset tags"
-                .type = str
+            
         }
     }
     output

@@ -9,14 +9,11 @@ class LoadDataset:
     """
     def __init__(self,
                  dataloader,
-                 sample_loader,
                  ):
         self.dataloader = dataloader
-        self.sample_loader = sample_loader
 
     def __call__(self):
-        pandda_dataset = multi_dataset_crystalography.dataset.dataset.MultiCrystalDataset(dataloader=self.dataloader,
-                                                                                          sample_loader=self.sample_loader,
+        pandda_dataset = multi_dataset_crystalography.dataset.dataset.MultiCrystalDatasetPlain(dataloader=self.dataloader,
                                                                                           )
 
         return pandda_dataset

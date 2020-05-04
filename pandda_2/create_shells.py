@@ -1,5 +1,6 @@
 from collections import OrderedDict
 
+
 class CreateShells:
 
     def __init__(self, min_train_datasets=60, max_test_datasets=60, cutoff=0.1):
@@ -23,18 +24,14 @@ class CreateShells:
         train_res_max = 0
         while len(train_datasets) < self.min_train_datasets:
             train_dataset = all_train_datasets_sorted.pop(0)
-            print(train_dataset)
             train_datasets[train_dataset[0]] = train_dataset[1]
             train_res_max = train_dataset[1].data.summary.high_res
-        print("Collected trian datasets")
 
         # Get all acceptable training datasets
         all_test_datasets = pandda_dataset.partition_datasets("test")
-        print("Got all test datasets")
 
         # Sort dataset tags by resolution
         all_test_datasets_sorted = sorted(all_test_datasets.items(), key=lambda kv: kv[1].data.summary.high_res)
-        print("sorted test datasets")
 
         # Accumulate datasets up to the max - per - iteration and then yield
         test_datasets = []
@@ -51,9 +48,6 @@ class CreateShells:
                 test_res_max = test_dataset[1].data.summary.high_res
                 continue
 
-            # Else yield the dataset for processing
-            print("yielding dataset")
-
             # Convert test datasets to dict
             test_datasets_dict = {key: value
                                   for key, value
@@ -63,8 +57,6 @@ class CreateShells:
             # Update test datasets with train datasets
             new_dataset = {key: value for key, value in test_datasets}
             new_dataset.update(train_datasets)
-
-            print(new_dataset)
 
             # Make new mcd with these datasets
             dataset = pandda_dataset.new_from_datasets(datasets=new_dataset)
@@ -77,11 +69,6 @@ class CreateShells:
                                   )
 
             # yield the dataset for processing
-            print("Dataset {} of length {}; res limits ({},{})"
-                  .format(idx,
-                          len(dataset.datasets),
-                          dataset_res_max,
-                          test_datasets[-1][1].data.summary.high_res))
 
             yield idx, dataset
 

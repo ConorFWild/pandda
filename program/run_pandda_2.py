@@ -15,6 +15,9 @@ from pandda_2 import (config,
 
 
 def main():
+    ####################################################################################################################
+    # Program Setup
+    ####################################################################################################################
     # Get start time
     pandda_start_time = time.time()
 
@@ -36,26 +39,30 @@ def main():
     log(pandda_logging.log_startup(working_phil))
     log(pandda_logging.log_config(pandda_config))
 
+    ####################################################################################################################
+    # Program
+    ####################################################################################################################
+
     try:
         # Options: maps a config to code abstraction
         pandda_options = options.Options(pandda_config)
         checks.check_config(pandda_config)
 
-        # Load the datase
+        # Load the datasets
         dataset = pandda_options.load_dataset()
         log(pandda_logging.log_load_datasets(dataset.datasets))
 
+        # Partition the dataset
+        dataset.partitions = pandda_options.partitioner(dataset.datasets)
+        log(pandda_logging.log_partitioning(dataset))
+
         # Get the reference
-        reference = pandda_options.get_reference(dataset.datasets)
+        reference = pandda_options.get_reference(dataset.partition_datasets("train"))
         log(pandda_logging.log_get_reference(reference))
 
         # Transform the dataset: check data, filter by RMSD, filter by wilson, scale diffraction, align
         dataset = pandda_options.transform_dataset(dataset, reference)
         log(pandda_logging.log_transform_dataset(dataset))
-
-        # Partition the dataset
-        dataset.partitions = pandda_options.partitioner(dataset.datasets)
-        log(pandda_logging.log_partitioning(dataset))
 
         # Generate the grid
         grid = pandda_options.get_grid(reference)
@@ -131,13 +138,15 @@ def main():
         pandda_options.output_event_table(events_table_with_sites,
                                           tree["analyses"]["pandda_analyse_events"](),
                                           )
-
         pandda_finish_time = time.time()
         log(pandda_logging.log_finish_pandda(pandda_start_time,
                                              pandda_finish_time,
                                              )
             )
 
+    ####################################################################################################################
+    # Program Wide error catching
+    ####################################################################################################################
     except Exception as e:
         # Catch and log any error
         log(pandda_logging.error(e))

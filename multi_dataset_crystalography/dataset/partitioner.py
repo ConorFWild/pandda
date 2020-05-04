@@ -66,11 +66,9 @@ class PrePanDDAPartitions:
 
 class DefaultPanDDAPartitionsGetter:
 
-    def __init__(self, test, train, not_test, not_train):
+    def __init__(self, test, train,):
         self.test = test
         self.train = train
-        self.not_test = not_test
-        self.not_train = not_train
 
     def __call__(self, datasets):
         partitions = OrderedDict()
@@ -78,66 +76,16 @@ class DefaultPanDDAPartitionsGetter:
         dtags = [dtag for dtag in datasets]
 
         # Get train set
-        if self.train:
+        if bool(self.train):
             # Get train datasets that are in datasets
             partitions["train"] = [dtag for dtag in self.train if (dtag in dtags)]
         else:
-            partitions["train"] = dtags
-
-        # Exclude non-training datasets
-        if self.not_train:
-            partitions["train"] = [dtag for dtag in partitions["train"] if not (dtag in self.not_train)]
+            partitions["train"] = [dtag for dtag in dtags]
 
         # Get test set
-        if self.train:
-            # Get train datasets that are in datasets
+        if bool(self.test):
             partitions["test"] = [dtag for dtag in self.test if (dtag in dtags)]
         else:
-            partitions["test"] = dtags
-
-        # Exclude non-training datasets
-        if self.not_train:
-            partitions["test"] = [dtag for dtag in partitions["test"] if not (dtag in self.not_test)]
+            partitions["test"] = [dtag for dtag in dtags]
 
         return partitions
-
-
-#
-# class DefaultPanDDAPartitions:
-#
-#     def __init__(self):
-#         self.partitions = OrderedDict()
-#
-#     def __call__(self, partition, samples):
-#         return {dtag: samples
-#                 for dtag, samples
-#                 in samples.items()
-#                 if dtag in self.partitions[partition]}
-#
-#     def set_partition(self, name, dtags):
-#         self.partitions[name] = dtags
-#
-#     def get_partition(self, name):
-#         return self.partitions[name]
-#
-#     def sample_partition(self, partition, samples):
-#         return {dtag: samples
-#                 for dtag, samples
-#                 in samples.items()
-#                 if dtag in self.partitions[partition]}
-
-    # def get_train(self):
-    #     return self.partitions["train"]
-    #
-    # def get_test(self):
-    #     return self.partitions["test"]
-    #
-    # def set_train(self, train_dtags):
-    #
-    #     self.partitions["train"] = train_dtags
-    #     return self.partitions["train"]
-    #
-    # def set_test(self, test_dtags):
-    #
-    #     self.partitions["test"] = test_dtags
-    #     return self.partitions["test"]

@@ -72,13 +72,7 @@ class MultiCrystalDataset:
         if datasets is None:
             assert dataloader is not None
             self.datasets = self.dataloader()
-            # self.trace[self.dataloader.name] = self.dataloader.log()
-            # print("######### Dataloader summary #########")
-            # for block, sub_block in self.dataloader.log().items():
-            #     print("######### {} ##########".format(block))
-            #     for sub_block, log_str in sub_block.items():
-            #         print("# # {} # #".format(sub_block))
-            #         print(log_str)
+
         else:
             self.datasets = datasets
 

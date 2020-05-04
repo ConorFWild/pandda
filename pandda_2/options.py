@@ -19,12 +19,6 @@ from multi_dataset_crystalography.dataset.reference import DefaultReferenceGette
 
 from multi_dataset_crystalography.dataset.sample_loader import PanddaDiffractionDataTruncater
 
-# from pandda_2 import (statistical_model,
-#                       cluster_outliers,
-#                       filter_clusters,
-#                       event_analyser,
-#                       )
-
 from pandda_2 import (config,
                       pandda_phil,
                       load_dataset,
@@ -59,17 +53,10 @@ from pandda_2 import (config,
                       standard_pandda,
                       autobuild,
                       checks,
+                      partitioner,
                       )
 
 from pandda_2 import statistical_model
-
-from multi_dataset_crystalography.dataset.partitioner import DefaultPanDDAPartitionsGetter
-
-
-#
-# from criticise import PanDDADefaultMapMaker, PanDDADefaultEventTableShell
-#
-# from classes import Criticiser, CriticiserAll
 
 class Options:
     def __init__(self, config):
@@ -97,11 +84,6 @@ class Options:
                                                     reference_structure_factors=None,
                                                     structure_factors=config.params.diffraction_data.structure_factors
                                                     )
-
-        # # Output
-        # self.pandda_output = PanddaOutputSetup(config.output.out_dir,
-        #                                        config.input.lig_style
-        #                                        )
 
         # # Transforms
         self.transform_data_check = PanddaDataChecker(config.params.diffraction_data.structure_factors,
@@ -150,31 +132,35 @@ class Options:
                                                                   )
                                            )
 
-        self.sample_loader = DefaultSampleLoader(config.params.maps.resolution_factor,
-                                                 config.params.maps.density_scaling,
-                                                 int(config.settings.cpus),
-                                                 bool(config.settings.verbose),
-                                                 self.grid_loader
-                                                 )
-
         # # Refernce map loader
         self.reference_map_getter = PanddaReferenceMapLoader(config.params.maps.resolution_factor,
                                                              config.params.maps.density_scaling,
                                                              )
 
         # # Partititioner
-        test = str(config.input.flags.test).split(",") if (str(config.input.flags.test) != "None") else None
-        train = str(config.input.flags.train).split(",") if (str(config.input.flags.train) != "None") else None
-        not_test = str(config.input.flags.not_test).split(",") if (
-                str(config.input.flags.not_test) != "None") else None
-        not_train = str(config.input.flags.not_train).split(",") if (
-                str(config.input.flags.not_train) != "None") else None
+        # Order:
+        # ignore datsets (remove from test and train)
+        # only datasets (remove all others from test and train)
+        # exclude datasets (remove from test)
+        # ground state (remove all others from test)
+        ignore = str(config.input.flags.ignore_datasets).split(",") if (
+                    str(config.input.flags.ignore_datasets) != "None") else []
+        only = str(config.input.flags.only_datasets).split(",") if (
+                    str(config.input.flags.only_datasets) != "None") else []
+        exclude = str(config.input.flags.exclude_from_characterisation).split(",") if (
+                    str(config.input.flags.exclude_from_characterisation) != "None") else []
+        ground_state_datasets = str(config.input.flags.ground_state_datasets).split(",") if (
+                    str(config.input.flags.ground_state_datasets) != "None") else []
 
-        self.partitioner = DefaultPanDDAPartitionsGetter(test=test,
-                                                         train=train,
-                                                         not_test=not_test,
-                                                         not_train=not_train,
-                                                         )
+        not_test = set(ignore)
+        not_train = set(ignore).union(set(exclude))
+
+        test = set(only).difference(not_train)
+        train = set(ground_state_datasets).intersection(set(only)).difference(not_test)
+
+        self.partitioner = partitioner.DefaultPanDDAPartitionsGetter(test=test,
+                                                                     train=train,
+                                                                     )
 
         # ============================================================================>
         # Event Model
@@ -202,27 +188,11 @@ class Options:
 
         self.diffraction_data_truncator = PanddaDiffractionDataTruncater()
 
-        #
-        # self.bdc_calculator = PanDDADefaultBDCCalculator(config.params.background_correction.max_bdc,
-        #                                                  config.params.background_correction.min_bdc,
-        #                                                  config.params.background_correction.increment,
-        #                                                  config.params.background_correction.output_multiplier
-        #                                                  )
-        #
         self.event_analyser = event_analyser.EventAnalyser(max_bdc=config.params.background_correction.max_bdc,
                                                            min_bdc=config.params.background_correction.min_bdc,
                                                            increment=config.params.background_correction.increment,
                                                            output_multiplier=config.params.background_correction.output_multiplier,
                                                            )
-        #
-        # self.map_maker = PanDDADefaultMapMaker()
-        #
-        # self.event_table_maker = PanDDADefaultEventTableShell(order_by=config.results.events.order_by)
-
-        # self.event_model = PanDDAEventModel(self.statistical_model,
-        #                                     self.clusterer,
-        #                                     self.event_finder,
-        #                                     statistics=[])
 
         # ############################
         # Criticism
@@ -234,11 +204,7 @@ class Options:
 
         # Get dataset loader
         self.load_dataset = load_dataset.LoadDataset(dataloader=self.dataloader,
-                                                     sample_loader=self.sample_loader,
                                                      )
-
-        # Get reference loader
-        self.get_reference = self.get_reference
 
         # Get dataset transformer
         self.transform_dataset = transform_dataset.TransformDataset(transform_data_check=self.transform_data_check,
@@ -251,9 +217,6 @@ class Options:
         # Get grid loader
         self.get_grid = self.grid_loader
 
-        # Get partitioner
-        self.partitioner = self.partitioner
-
         # Get output handler
         self.define_tree = define_tree.DefineTree(output_dir=config.output.out_dir)
         self.make_tree = make_tree.MakeTree(overwrite=config.output.overwrite)
@@ -265,29 +228,13 @@ class Options:
                                     )
 
         # Get resolution shell scheme
-        self.create_shells = create_shells.CreateShells(min_train_datasets=config.params.statistical_maps.min_build_datasets,
-                                                        max_test_datasets=config.params.statistical_maps.max_build_datasets,
-                                                        cutoff=0.1,
-                                                        )
+        self.create_shells = create_shells.CreateShells(
+            min_train_datasets=config.params.statistical_maps.min_build_datasets,
+            max_test_datasets=config.params.statistical_maps.max_build_datasets,
+            cutoff=0.1,
+            )
 
         # Get Resolution shell processor
-        diffraction_data_truncator_obj = self.diffraction_data_truncator
-        reference_map_getter_obj = self.reference_map_getter
-        get_reference_map_obj = get_reference_map.GetReferenceMap()
-
-        map_loader_obj = self.map_loader
-        statistical_model_obj = self.statistical_model
-        fit_model_obj = fit_model.FitModel()
-        evaluate_model_obj = evaluate_model.EvaluateModel()
-        cluster_outliers_obj = self.clusterer
-        filter_clusters_obj = self.event_finder
-        event_analyser_obj = self.event_analyser
-
-        make_event_map_obj = make_event_map.MakeEventMap()
-        make_z_map_obj = make_z_map.MakeZMap()
-        make_mean_map_obj = make_mean_map.MakeMeanMap()
-        make_event_table_obj = make_event_table.MakeEventTable()
-
         self.n_cpus_shells = config.processing.process_dict_n_cpus
         self.h_vmem = config.processing.h_vmem
         self.m_mem_free = config.processing.m_mem_free
@@ -298,23 +245,23 @@ class Options:
         elif config.processing.process_dict == "seriel":
             process_in_shell = processor.ProcessorDict()
 
-        self.process_shell = process_shell.ProcessShell(diffraction_data_truncator=diffraction_data_truncator_obj,
-                                                        reference_map_getter=reference_map_getter_obj,
-                                                        get_reference_map=get_reference_map_obj,
-                                                        map_loader=map_loader_obj,
-                                                        statistical_model=statistical_model_obj,
-                                                        fit_model=fit_model_obj,
-                                                        evaluate_model=evaluate_model_obj,
-                                                        cluster_outliers=cluster_outliers_obj,
-                                                        filter_clusters=filter_clusters_obj,
-                                                        event_analyser=event_analyser_obj,
-                                                        make_event_map=make_event_map_obj,
-                                                        make_z_map=make_z_map_obj,
-                                                        make_mean_map=make_mean_map_obj,
-                                                        make_event_table=make_event_table_obj,
+        self.process_shell = process_shell.ProcessShell(diffraction_data_truncator=self.diffraction_data_truncator,
+                                                        reference_map_getter=self.reference_map_getter,
+                                                        get_reference_map=get_reference_map.GetReferenceMap(),
+                                                        map_loader=self.map_loader,
+                                                        statistical_model=self.statistical_model,
+                                                        fit_model=fit_model.FitModel(),
+                                                        evaluate_model=evaluate_model.EvaluateModel(),
+                                                        cluster_outliers=self.clusterer,
+                                                        filter_clusters=self.event_finder,
+                                                        event_analyser=self.event_analyser,
+                                                        make_event_map=make_event_map.MakeEventMap(),
+                                                        make_z_map=make_z_map.MakeZMap(),
+                                                        make_mean_map=make_mean_map.MakeMeanMap(),
+                                                        make_event_table=make_event_table.MakeEventTable(),
                                                         process=process_in_shell,
                                                         )
-        print(config.processing.process_shells )
+
         if config.processing.process_shells == "luigi":
             self.processer = processor.ProcessorLuigi(jobs=10,
                                                       parallel_env="smp",
@@ -337,6 +284,3 @@ class Options:
 
         # Get event table outputter
         self.output_event_table = output_event_table.OutputEventTable()
-
-        # Autobuilders
-        self.autobuilder = autobuild.AutobuildQFit()

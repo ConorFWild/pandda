@@ -205,7 +205,6 @@ class ProcessShell:
                                    self.grid,
                                    )
                 analyse_funcs[dtag] = task
-            # events_analysed = self.process(analyse_funcs)
             events_analysed = processor(analyse_funcs)
 
             events_analysed_computed = events_analysed
@@ -215,10 +214,6 @@ class ProcessShell:
             log(pandda_logging.log_shell_analysed_events(events_analysed))
 
             # Criticise each indidual dataset (generate statistics, event map and event table)
-            z_maps_ccp4 = OrderedDict()
-
-            event_map_args = OrderedDict()
-            z_map_args = OrderedDict()
             event_maps = OrderedDict()
 
             z_map_funcs = OrderedDict()
@@ -228,7 +223,6 @@ class ProcessShell:
                 event_maps[dtag] = OrderedDict()
 
                 if len(events_computed[dtag][2]) != 0:
-                    # print("Making z map args")
                     z_map_funcs[dtag] = TaskWrapper(self.make_z_map,
                                                     xmaps[dtag],
                                                     truncated_datasets[dtag],
