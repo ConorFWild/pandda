@@ -82,23 +82,6 @@ class ClusterFSModel:
         self.initial_model_dirs = {path.name: path for path in input_dir.glob("*")}
 
 
-class Dataset:
-    def __init__(self):
-        pass
-
-    @staticmethod
-    def from_dir(directory):
-        pass
-
-
-class XMap:
-    def __init__(self):
-        pass
-
-    @staticmethod
-    def from_dataset():
-        pass
-
 
 def map_dict(f, dictionary):
     # keys = list(dictionary.keys())
@@ -134,20 +117,6 @@ def make_clustering_html(embedding,
                          cluster_html_path,
                          ):
     pass
-
-
-#
-# class Log:
-#     def __init__(self, log_dir_path):
-#         self.log_path = log_dir_path / "log.txt"
-#         try:
-#             os.remove(str(self.log_path))
-#         except:
-#             pass
-#
-#     def __call__(self, log_string):
-#         with open(str(self.log_path), "a+") as f:
-#             f.write(str(log_string))
 
 
 def main():
