@@ -962,6 +962,8 @@ class PanddaMolHandler(object):
         # Set the occupancy of the ligand to 2*(1-bdc)
         all_residue_ids = all_residues(l)
         print(all_residue_ids)
+        print(all_residue_ids[0])
+
         #  TODO: What is this mystery bool from phenix.elbow
         if all_residue_ids:
             if len(all_residue_ids) == 4:
