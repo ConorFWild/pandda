@@ -2,6 +2,7 @@ from __future__ import print_function
 
 # Imports
 import sys
+import os
 import time
 from pathlib import Path
 from pandda_2 import (config,
@@ -30,6 +31,7 @@ def main():
 
     # Maps options to code abstraction: Phil -> Config
     pandda_config = config.Config(working_phil)
+    os.mkdir(str(pandda_config.output.out_dir))
     store.dump_config_to_json(pandda_config,
                               Path(str(pandda_config.output.out_dir)) / "pandda.json",
                               )
