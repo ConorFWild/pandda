@@ -31,7 +31,10 @@ def main():
 
     # Maps options to code abstraction: Phil -> Config
     pandda_config = config.Config(working_phil)
-    os.mkdir(str(pandda_config.output.out_dir))
+    try:
+        os.mkdir(str(pandda_config.output.out_dir))
+    except:
+        pass
     store.dump_config_to_json(pandda_config,
                               Path(str(pandda_config.output.out_dir)) / "pandda.json",
                               )
